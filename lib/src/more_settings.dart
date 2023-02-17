@@ -30,41 +30,18 @@ class _MoreSettingsState extends State<MoreSettings> {
           Expanded(
             child: ListView(
               children: [
-                if (widget.appInfo.privacyPolicy != null &&
-                    widget.appInfo.privacyPolicy!.isNotEmpty)
+                if (widget.appInfo.privacyPolicy?.isNotEmpty ?? false)
                   ListTile(
                     title: Text('Privacy Policy', style: style),
                     leading: const Icon(Icons.security),
                     onTap: _privacyPolicy,
                   ),
-                if (widget.appInfo.appStoreID != null &&
-                    widget.appInfo.appStoreID!.isNotEmpty)
+                _buildRateUs(style),
+                _buildShare(style),
+                _buildMoreApps(style),
+                if (widget.appInfo.supportEmail?.isNotEmpty ?? false)
                   ListTile(
-                    title: Text('Rate Us', style: style),
-                    leading: const Icon(Icons.stars),
-                    onTap: _rateUs,
-                  ),
-                ListTile(
-                  title: Text('Share', style: style),
-                  leading: const Icon(Icons.share),
-                  onTap: _share,
-                ),
-                if ((widget.appInfo.itunesMoreAppLink != null &&
-                        widget.appInfo.itunesMoreAppLink!.isNotEmpty) ||
-                    (widget.appInfo.androidDeveloperName != null &&
-                        widget.appInfo.androidDeveloperName!.isNotEmpty))
-                  ListTile(
-                    title: Text('More Apps', style: style),
-                    leading: const Icon(Icons.widgets),
-                    onTap: _moreApps,
-                  ),
-                if (widget.appInfo.supportEmail != null &&
-                    widget.appInfo.supportEmail!.isNotEmpty)
-                  ListTile(
-                    title: Text(
-                      'Contact Us',
-                      style: style,
-                    ),
+                    title: Text('Contact Us', style: style),
                     leading: const Icon(Icons.email),
                     onTap: _mailTo,
                   ),
@@ -85,13 +62,11 @@ class _MoreSettingsState extends State<MoreSettings> {
     showAboutDialog(
         context: context,
         applicationName: widget.appInfo.appName,
-        applicationIcon: widget.appInfo.appIconPath != null &&
-                widget.appInfo.appIconPath!.isNotEmpty
+        applicationIcon: widget.appInfo.appIconPath?.isNotEmpty ?? false
             ? Image.asset(widget.appInfo.appIconPath!, width: 50)
             : null,
         applicationVersion: 'version ${widget.appInfo.versionAndBuild}',
-        children: widget.appInfo.aboutAppDescription != null &&
-                widget.appInfo.aboutAppDescription!.isNotEmpty
+        children: widget.appInfo.aboutAppDescription?.isNotEmpty ?? false
             ? [Text(widget.appInfo.aboutAppDescription!)]
             : null);
   }
@@ -106,8 +81,15 @@ class _MoreSettingsState extends State<MoreSettings> {
   }
 
   void _share() {
-    Share.share(
-        'Hey there check out the best ${widget.appInfo.appName}: iOS: items-apps://itunes.apple.com/app/apple-store/id${widget.appInfo.appStoreID}?mt=8  Android: https://play.google.com/store/apps/details?id=${widget.appInfo.packageName}',
+    String link = '';
+    if (Platform.isAndroid) {
+      link =
+          'Android: https://play.google.com/store/apps/details?id=${widget.appInfo.packageName}';
+    } else {
+      link =
+          'iOS: items-apps://itunes.apple.com/app/apple-store/id${widget.appInfo.appStoreID}?mt=8';
+    }
+    Share.share('Hey there check out the best ${widget.appInfo.appName}: $link',
         subject: widget.appInfo.appName);
   }
 
@@ -163,5 +145,44 @@ class _MoreSettingsState extends State<MoreSettings> {
         );
       },
     );
+  }
+
+  Widget _buildRateUs(TextStyle? style) {
+    if (Platform.isIOS && (widget.appInfo.appStoreID?.isEmpty ?? true)) {
+      return const SizedBox();
+    }
+
+    return ListTile(
+      title: Text('Rate Us', style: style),
+      leading: const Icon(Icons.stars),
+      onTap: _rateUs,
+    );
+  }
+
+  Widget _buildShare(TextStyle? style) {
+    if (Platform.isIOS && (widget.appInfo.appStoreID?.isEmpty ?? true)) {
+      return const SizedBox();
+    }
+
+    return ListTile(
+      title: Text('Share', style: style),
+      leading: const Icon(Icons.share),
+      onTap: _share,
+    );
+  }
+
+  Widget _buildMoreApps(TextStyle? style) {
+    if ((Platform.isIOS &&
+            (widget.appInfo.itunesMoreAppLink?.isNotEmpty ?? false)) ||
+        (Platform.isAndroid &&
+            (widget.appInfo.androidDeveloperName?.isNotEmpty ?? false))) {
+      return ListTile(
+        title: Text('More Apps', style: style),
+        leading: const Icon(Icons.widgets),
+        onTap: _moreApps,
+      );
+    }
+
+    return const SizedBox();
   }
 }
