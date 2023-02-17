@@ -1,3 +1,4 @@
+import 'package:easy_service_manager/easy_service_manager.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,19 +29,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
-      ),
+  void initState() {
+    super.initState();
+    EasyServicesManager.instance.initialize(
+      aboutAppDescription: 'You can add the app description here.',
+      supportEmail: 'mail@example.com',
+      itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+      androidDeveloperName: 'TikTok+Pte.+Ltd',
+      appStoreID: '835599320',
+      privacyPolicy: 'This is the privacy policy here.',
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return EasyServicesManager.instance.moreScreen();
   }
 }
