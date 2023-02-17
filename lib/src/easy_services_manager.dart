@@ -1,3 +1,5 @@
+import 'package:easy_service_manager/src/utils/app_info.dart';
+
 class EasyServicesManager {
   EasyServicesManager._easyServicesManager();
   static final EasyServicesManager instance =
@@ -11,14 +13,14 @@ class EasyServicesManager {
   late final String? appIconPath;
   late final String? privacyPolicy;
 
-  void initialize(
-      {String? appStoreID,
-      String? itunesMoreAppLink,
-      String? androidDeveloperName,
-      String? supportEmail,
-      String? aboutAppDescription,
-      String? appIconPath,
-      String? privacyPolicy}) {
+  Future<void> initialize(
+      {final String? appStoreID,
+      final String? itunesMoreAppLink,
+      final String? androidDeveloperName,
+      final String? supportEmail,
+      final String? aboutAppDescription,
+      final String? appIconPath,
+      final String? privacyPolicy}) async {
     this.appStoreID = appStoreID;
     this.itunesMoreAppLink = itunesMoreAppLink;
     this.androidDeveloperName = androidDeveloperName;
@@ -26,5 +28,6 @@ class EasyServicesManager {
     this.aboutAppDescription = aboutAppDescription;
     this.appIconPath = appIconPath;
     this.privacyPolicy = privacyPolicy;
+    await AppInfo.instance.init();
   }
 }

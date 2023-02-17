@@ -35,19 +35,19 @@ class _MoreSettingsState extends State<MoreSettings> {
                     EasyServicesManager.instance.privacyPolicy!.isNotEmpty)
                   ListTile(
                     title: Text('Privacy Policy', style: style),
-                    leading: Icon(Icons.security, color: iconColor),
+                    leading: const Icon(Icons.security),
                     onTap: _privacyPolicy,
                   ),
                 if (EasyServicesManager.instance.appStoreID != null &&
                     EasyServicesManager.instance.appStoreID!.isNotEmpty)
                   ListTile(
                     title: Text('Rate Us', style: style),
-                    leading: Icon(Icons.stars, color: iconColor),
+                    leading: const Icon(Icons.stars),
                     onTap: _rateUs,
                   ),
                 ListTile(
                   title: Text('Share', style: style),
-                  leading: Icon(Icons.share, color: iconColor),
+                  leading: const Icon(Icons.share),
                   onTap: _share,
                 ),
                 if ((EasyServicesManager.instance.itunesMoreAppLink != null &&
@@ -59,7 +59,7 @@ class _MoreSettingsState extends State<MoreSettings> {
                             .instance.androidDeveloperName!.isNotEmpty))
                   ListTile(
                     title: Text('More Apps', style: style),
-                    leading: Icon(Icons.widgets, color: iconColor),
+                    leading: const Icon(Icons.widgets),
                     onTap: _moreApps,
                   ),
                 if (EasyServicesManager.instance.supportEmail != null &&
@@ -69,15 +69,14 @@ class _MoreSettingsState extends State<MoreSettings> {
                       'Contact Us',
                       style: style,
                     ),
-                    leading: Icon(Icons.email, color: iconColor),
+                    leading: const Icon(Icons.email),
                     onTap: _mailTo,
                   ),
-                if (isShowAboutTile())
-                  ListTile(
-                    title: Text('About', style: style),
-                    leading: Icon(Icons.info_outline, color: iconColor),
-                    onTap: _showAboutDialog,
-                  ),
+                ListTile(
+                  title: Text('About', style: style),
+                  leading: const Icon(Icons.info_outline),
+                  onTap: _showAboutDialog,
+                ),
               ],
             ),
           )
@@ -86,24 +85,19 @@ class _MoreSettingsState extends State<MoreSettings> {
     );
   }
 
-  bool isShowAboutTile() {
-    if ((EasyServicesManager.instance.appIconPath != null &&
-            EasyServicesManager.instance.appIconPath!.isNotEmpty) &&
-        (EasyServicesManager.instance.aboutAppDescription != null &&
-            EasyServicesManager.instance.aboutAppDescription!.isNotEmpty)) {
-      return true;
-    }
-    return false;
-  }
-
   void _showAboutDialog() {
     showAboutDialog(
         context: context,
         applicationName: AppInfo.instance.appName,
-        applicationIcon:
-            Image.asset(EasyServicesManager.instance.appIconPath!, width: 50),
+        applicationIcon: EasyServicesManager.instance.appIconPath != null &&
+                EasyServicesManager.instance.appIconPath!.isNotEmpty
+            ? Image.asset(EasyServicesManager.instance.appIconPath!, width: 50)
+            : null,
         applicationVersion: 'version ${AppInfo.instance.versionAndBuild}',
-        children: [Text(EasyServicesManager.instance.aboutAppDescription!)]);
+        children: EasyServicesManager.instance.aboutAppDescription != null &&
+                EasyServicesManager.instance.aboutAppDescription!.isNotEmpty
+            ? [Text(EasyServicesManager.instance.aboutAppDescription!)]
+            : null);
   }
 
   void _mailTo() {
