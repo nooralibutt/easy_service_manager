@@ -1,3 +1,4 @@
+import 'package:easy_service_manager/easy_service_manager.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,19 +29,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
-      ),
+  void initState() {
+    super.initState();
+    EasyServicesManager.instance.initialize(
+      aboutAppDescription:
+          'Scary Teacher Chat Master consists of several activities related to mobile phone, '
+          'especially texting and chat. Sometimes battle text become more attractive.\n'
+          'Each Master chat scenario, where you choose what to write, is followed by one or two or'
+          ' more text messages replies. Our Scary teacher Master Chat is a Master piece.',
+      supportEmail: 'nallit.apps@gmail.com',
+      itunesMoreAppLink: 'regent-branding-ltd/id1128207635',
+      androidDeveloperName: 'Clay+Rock+Studio',
+      appStoreID: '1552191588',
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const MoreSettings();
   }
 }
