@@ -12,8 +12,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge),
       ),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
-          child: Text(EasyServicesManager.instance.privacyPolicy ?? ''),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(EasyServicesManager.instance.privacyPolicy ?? ''),
+          ),
         ),
       ),
     );

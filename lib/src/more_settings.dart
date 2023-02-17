@@ -124,10 +124,16 @@ class _MoreSettingsState extends State<MoreSettings> {
         : 'market://search?q=pub:${EasyServicesManager.instance.androidDeveloperName}');
   }
 
-  void _privacyPolicy() => Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (BuildContext context) => const PrivacyPolicyScreen()));
+  void _privacyPolicy() {
+    if (EasyServicesManager.instance.privacyPolicy!.startsWith('http')) {
+      _launchURL(EasyServicesManager.instance.privacyPolicy!);
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const PrivacyPolicyScreen()));
+    }
+  }
 
   void _launchURL(String url) async {
     if (await canLaunchUrl(Uri(path: url))) {

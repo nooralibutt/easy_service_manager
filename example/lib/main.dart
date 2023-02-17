@@ -32,15 +32,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     EasyServicesManager.instance.initialize(
-      aboutAppDescription:
-          'Scary Teacher Chat Master consists of several activities related to mobile phone, '
-          'especially texting and chat. Sometimes battle text become more attractive.\n'
-          'Each Master chat scenario, where you choose what to write, is followed by one or two or'
-          ' more text messages replies. Our Scary teacher Master Chat is a Master piece.',
-      supportEmail: 'nallit.apps@gmail.com',
-      itunesMoreAppLink: 'regent-branding-ltd/id1128207635',
-      androidDeveloperName: 'Clay+Rock+Studio',
-      appStoreID: '1552191588',
+      aboutAppDescription: 'You can add the app description here.',
+      supportEmail: 'mail@example.com',
+      itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+      androidDeveloperName: 'TikTok+Pte.+Ltd',
+      appStoreID: '835599320',
+      privacyPolicy: 'This is the privacy policy here.',
     );
   }
 
