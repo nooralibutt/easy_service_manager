@@ -1,20 +1,25 @@
-import 'dart:async';
-
-import 'package:package_info_plus/package_info_plus.dart';
-
 class AppInfo {
-  // Singleton instance code
-  static final AppInfo _instance = AppInfo._();
-  static AppInfo get instance => _instance;
-  AppInfo._();
+  final String? appStoreID;
+  final String? itunesMoreAppLink;
+  final String? androidDeveloperName;
+  final String? supportEmail;
+  final String? aboutAppDescription;
+  final String? appIconPath;
+  final String? privacyPolicy;
+  final String? appName;
+  final String? packageName;
+  final String? versionAndBuild;
 
-  late PackageInfo _info;
-
-  Future<void> init() async {
-    _info = await PackageInfo.fromPlatform();
-  }
-
-  String get appName => _info.appName;
-  String get packageName => _info.packageName;
-  String get versionAndBuild => '${_info.version}+${_info.buildNumber}';
+  AppInfo({
+    this.appStoreID,
+    this.itunesMoreAppLink,
+    this.androidDeveloperName,
+    this.supportEmail,
+    this.aboutAppDescription,
+    this.appIconPath,
+    this.privacyPolicy,
+    this.appName,
+    this.packageName,
+    this.versionAndBuild,
+  });
 }

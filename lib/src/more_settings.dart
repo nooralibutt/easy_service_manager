@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_service_manager/src/easy_services_manager.dart';
 import 'package:easy_service_manager/src/privacy_policy_screen.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MoreSettings extends StatefulWidget {
-  const MoreSettings({super.key});
+  final AppInfo appInfo;
+  const MoreSettings({super.key, required this.appInfo});
 
   @override
   State<MoreSettings> createState() => _MoreSettingsState();
@@ -22,7 +22,6 @@ class _MoreSettingsState extends State<MoreSettings> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final style = theme.textTheme.titleLarge;
-    final iconColor = theme.iconTheme.color;
 
     return Scaffold(
       appBar: AppBar(title: const Text('More Settings')),
@@ -31,15 +30,15 @@ class _MoreSettingsState extends State<MoreSettings> {
           Expanded(
             child: ListView(
               children: [
-                if (EasyServicesManager.instance.privacyPolicy != null &&
-                    EasyServicesManager.instance.privacyPolicy!.isNotEmpty)
+                if (widget.appInfo.privacyPolicy != null &&
+                    widget.appInfo.privacyPolicy!.isNotEmpty)
                   ListTile(
                     title: Text('Privacy Policy', style: style),
                     leading: const Icon(Icons.security),
                     onTap: _privacyPolicy,
                   ),
-                if (EasyServicesManager.instance.appStoreID != null &&
-                    EasyServicesManager.instance.appStoreID!.isNotEmpty)
+                if (widget.appInfo.appStoreID != null &&
+                    widget.appInfo.appStoreID!.isNotEmpty)
                   ListTile(
                     title: Text('Rate Us', style: style),
                     leading: const Icon(Icons.stars),
@@ -50,20 +49,17 @@ class _MoreSettingsState extends State<MoreSettings> {
                   leading: const Icon(Icons.share),
                   onTap: _share,
                 ),
-                if ((EasyServicesManager.instance.itunesMoreAppLink != null &&
-                        EasyServicesManager
-                            .instance.itunesMoreAppLink!.isNotEmpty) ||
-                    (EasyServicesManager.instance.androidDeveloperName !=
-                            null &&
-                        EasyServicesManager
-                            .instance.androidDeveloperName!.isNotEmpty))
+                if ((widget.appInfo.itunesMoreAppLink != null &&
+                        widget.appInfo.itunesMoreAppLink!.isNotEmpty) ||
+                    (widget.appInfo.androidDeveloperName != null &&
+                        widget.appInfo.androidDeveloperName!.isNotEmpty))
                   ListTile(
                     title: Text('More Apps', style: style),
                     leading: const Icon(Icons.widgets),
                     onTap: _moreApps,
                   ),
-                if (EasyServicesManager.instance.supportEmail != null &&
-                    EasyServicesManager.instance.supportEmail!.isNotEmpty)
+                if (widget.appInfo.supportEmail != null &&
+                    widget.appInfo.supportEmail!.isNotEmpty)
                   ListTile(
                     title: Text(
                       'Contact Us',
@@ -88,50 +84,53 @@ class _MoreSettingsState extends State<MoreSettings> {
   void _showAboutDialog() {
     showAboutDialog(
         context: context,
-        applicationName: AppInfo.instance.appName,
-        applicationIcon: EasyServicesManager.instance.appIconPath != null &&
-                EasyServicesManager.instance.appIconPath!.isNotEmpty
-            ? Image.asset(EasyServicesManager.instance.appIconPath!, width: 50)
+        applicationName: widget.appInfo.appName,
+        applicationIcon: widget.appInfo.appIconPath != null &&
+                widget.appInfo.appIconPath!.isNotEmpty
+            ? Image.asset(widget.appInfo.appIconPath!, width: 50)
             : null,
-        applicationVersion: 'version ${AppInfo.instance.versionAndBuild}',
-        children: EasyServicesManager.instance.aboutAppDescription != null &&
-                EasyServicesManager.instance.aboutAppDescription!.isNotEmpty
-            ? [Text(EasyServicesManager.instance.aboutAppDescription!)]
+        applicationVersion: 'version ${widget.appInfo.versionAndBuild}',
+        children: widget.appInfo.aboutAppDescription != null &&
+                widget.appInfo.aboutAppDescription!.isNotEmpty
+            ? [Text(widget.appInfo.aboutAppDescription!)]
             : null);
   }
 
   void _mailTo() {
     final Uri emailLaunchUri = Uri(
         scheme: 'mailto',
-        path: EasyServicesManager.instance.supportEmail,
-        queryParameters: {'subject': AppInfo.instance.appName});
+        path: widget.appInfo.supportEmail,
+        queryParameters: {'subject': widget.appInfo.appName});
 
     _launchURL(emailLaunchUri.toString());
   }
 
   void _share() {
     Share.share(
-        'Hey there check out the best ${AppInfo.instance.appName}: iOS: items-apps://itunes.apple.com/app/apple-store/id${EasyServicesManager.instance.appStoreID}?mt=8  Android: https://play.google.com/store/apps/details?id=${AppInfo.instance.packageName}',
-        subject: AppInfo.instance.appName);
+        'Hey there check out the best ${widget.appInfo.appName}: iOS: items-apps://itunes.apple.com/app/apple-store/id${widget.appInfo.appStoreID}?mt=8  Android: https://play.google.com/store/apps/details?id=${widget.appInfo.packageName}',
+        subject: widget.appInfo.appName);
   }
 
-  void _rateUs() => inAppReview.openStoreListing(
-      appStoreId: EasyServicesManager.instance.appStoreID);
+  void _rateUs() =>
+      inAppReview.openStoreListing(appStoreId: widget.appInfo.appStoreID);
 
   void _moreApps() async {
     _launchURL(Platform.isIOS
-        ? 'https://apps.apple.com/us/developer/${EasyServicesManager.instance.itunesMoreAppLink}'
-        : 'market://search?q=pub:${EasyServicesManager.instance.androidDeveloperName}');
+        ? 'https://apps.apple.com/us/developer/${widget.appInfo.itunesMoreAppLink}'
+        : 'market://search?q=pub:${widget.appInfo.androidDeveloperName}');
   }
 
   void _privacyPolicy() {
-    if (EasyServicesManager.instance.privacyPolicy!.startsWith('http')) {
-      _launchURL(EasyServicesManager.instance.privacyPolicy!);
+    if (widget.appInfo.privacyPolicy!.startsWith('http')) {
+      _launchURL(widget.appInfo.privacyPolicy!);
     } else {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const PrivacyPolicyScreen()));
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => PrivacyPolicyScreen(
+              privacyPolicy: widget.appInfo.privacyPolicy ?? ''),
+        ),
+      );
     }
   }
 
@@ -150,20 +149,9 @@ class _MoreSettingsState extends State<MoreSettings> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text(
-            title,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(color: Colors.white),
-          ),
-          content: Text(
-            description,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: Colors.white),
-          ),
+          title: Text(title, style: Theme.of(context).textTheme.titleLarge),
+          content:
+              Text(description, style: Theme.of(context).textTheme.bodyLarge),
           actions: <Widget>[
             TextButton(
               child: const Text('Dismiss'),

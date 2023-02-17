@@ -1,17 +1,14 @@
+import 'package:easy_service_manager/easy_service_manager.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
+import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class EasyServicesManager {
   EasyServicesManager._easyServicesManager();
   static final EasyServicesManager instance =
       EasyServicesManager._easyServicesManager();
 
-  late final String? appStoreID;
-  late final String? itunesMoreAppLink;
-  late final String? androidDeveloperName;
-  late final String? supportEmail;
-  late final String? aboutAppDescription;
-  late final String? appIconPath;
-  late final String? privacyPolicy;
+  AppInfo _appInfo = AppInfo();
 
   Future<void> initialize(
       {final String? appStoreID,
@@ -21,13 +18,21 @@ class EasyServicesManager {
       final String? aboutAppDescription,
       final String? appIconPath,
       final String? privacyPolicy}) async {
-    this.appStoreID = appStoreID;
-    this.itunesMoreAppLink = itunesMoreAppLink;
-    this.androidDeveloperName = androidDeveloperName;
-    this.supportEmail = supportEmail;
-    this.aboutAppDescription = aboutAppDescription;
-    this.appIconPath = appIconPath;
-    this.privacyPolicy = privacyPolicy;
-    await AppInfo.instance.init();
+    final info = await PackageInfo.fromPlatform();
+
+    _appInfo = AppInfo(
+      appStoreID: appStoreID,
+      itunesMoreAppLink: itunesMoreAppLink,
+      androidDeveloperName: androidDeveloperName,
+      supportEmail: supportEmail,
+      aboutAppDescription: aboutAppDescription,
+      appIconPath: appIconPath,
+      privacyPolicy: privacyPolicy,
+      appName: info.appName,
+      packageName: info.packageName,
+      versionAndBuild: '${info.version}+${info.buildNumber}',
+    );
   }
+
+  Widget moreScreen() => MoreSettings(appInfo: _appInfo);
 }

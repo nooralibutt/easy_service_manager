@@ -1,8 +1,8 @@
-import 'package:easy_service_manager/src/easy_services_manager.dart';
 import 'package:flutter/material.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
-  const PrivacyPolicyScreen({super.key});
+  final String privacyPolicy;
+  const PrivacyPolicyScreen({super.key, required this.privacyPolicy});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Text(EasyServicesManager.instance.privacyPolicy ?? ''),
+            child: Text(privacyPolicy ?? ''),
           ),
         ),
       ),
