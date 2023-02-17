@@ -1,4 +1,5 @@
 import 'package:easy_service_manager/easy_service_manager.dart';
+import 'package:easy_service_manager/src/rating_manager.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -19,6 +20,7 @@ class EasyServicesManager {
       final String? appIconPath,
       final String? privacyPolicy}) async {
     final info = await PackageInfo.fromPlatform();
+    RatingManager.incrementAppLaunches();
 
     _appInfo = AppInfo(
       appStoreID: appStoreID,
@@ -35,4 +37,16 @@ class EasyServicesManager {
   }
 
   Widget moreScreen() => MoreSettings(appInfo: _appInfo);
+
+  Widget rateFloatingActionButton() =>
+      RateFloatingButton(appStoreId: _appInfo.appStoreID);
+
+  Future<bool> tryShowingCustomInAppReview(BuildContext context) =>
+      RatingManager.tryShowingCustomInAppReview(context, _appInfo.appStoreID);
+
+  Future<bool> tryShowingNativeInAppReview() =>
+      RatingManager.tryShowingNativeInAppReview();
+
+  Future<bool?> showRatingDialog(BuildContext context, String? appStoreId) =>
+      RatingManager.showRatingDialog(context, appStoreId);
 }
