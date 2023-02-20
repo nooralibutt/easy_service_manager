@@ -25,34 +25,28 @@ class _MoreSettingsState extends State<MoreSettings> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('More Settings')),
-      body: Column(
+      body: ListView(
         children: [
-          Expanded(
-            child: ListView(
-              children: [
-                if (widget.appInfo.privacyPolicy?.isNotEmpty ?? false)
-                  ListTile(
-                    title: Text('Privacy Policy', style: style),
-                    leading: const Icon(Icons.security),
-                    onTap: _privacyPolicy,
-                  ),
-                _buildRateUs(style),
-                _buildShare(style),
-                _buildMoreApps(style),
-                if (widget.appInfo.supportEmail?.isNotEmpty ?? false)
-                  ListTile(
-                    title: Text('Contact Us', style: style),
-                    leading: const Icon(Icons.email),
-                    onTap: _mailTo,
-                  ),
-                ListTile(
-                  title: Text('About', style: style),
-                  leading: const Icon(Icons.info_outline),
-                  onTap: _showAboutDialog,
-                ),
-              ],
+          if (widget.appInfo.privacyPolicy?.isNotEmpty ?? false)
+            ListTile(
+              title: Text('Privacy Policy', style: style),
+              leading: const Icon(Icons.security),
+              onTap: _privacyPolicy,
             ),
-          )
+          _buildRateUs(style),
+          _buildShare(style),
+          _buildMoreApps(style),
+          if (widget.appInfo.supportEmail?.isNotEmpty ?? false)
+            ListTile(
+              title: Text('Contact Us', style: style),
+              leading: const Icon(Icons.email),
+              onTap: _mailTo,
+            ),
+          ListTile(
+            title: Text('About', style: style),
+            leading: const Icon(Icons.info_outline),
+            onTap: _showAboutDialog,
+          ),
         ],
       ),
     );
