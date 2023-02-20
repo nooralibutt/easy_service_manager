@@ -24,35 +24,37 @@ class _MoreSettingsState extends State<MoreSettings> {
     final style = theme.textTheme.titleLarge;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('More Settings')),
-      body: Column(
+      body: ListView(
         children: [
-          Expanded(
-            child: ListView(
-              children: [
-                if (widget.appInfo.privacyPolicy?.isNotEmpty ?? false)
-                  ListTile(
-                    title: Text('Privacy Policy', style: style),
-                    leading: const Icon(Icons.security),
-                    onTap: _privacyPolicy,
-                  ),
-                _buildRateUs(style),
-                _buildShare(style),
-                _buildMoreApps(style),
-                if (widget.appInfo.supportEmail?.isNotEmpty ?? false)
-                  ListTile(
-                    title: Text('Contact Us', style: style),
-                    leading: const Icon(Icons.email),
-                    onTap: _mailTo,
-                  ),
-                ListTile(
-                  title: Text('About', style: style),
-                  leading: const Icon(Icons.info_outline),
-                  onTap: _showAboutDialog,
-                ),
-              ],
+          ListTile(
+            leading: getCloseButton(),
+            title: Text(
+              ' Settings',
+              style: theme.textTheme.headlineLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
-          )
+          ),
+          const SizedBox(height: 10),
+          if (widget.appInfo.privacyPolicy?.isNotEmpty ?? false)
+            ListTile(
+              title: Text('Privacy Policy', style: style),
+              leading: const Icon(Icons.security),
+              onTap: _privacyPolicy,
+            ),
+          _buildRateUs(style),
+          _buildShare(style),
+          _buildMoreApps(style),
+          if (widget.appInfo.supportEmail?.isNotEmpty ?? false)
+            ListTile(
+              title: Text('Contact Us', style: style),
+              leading: const Icon(Icons.email),
+              onTap: _mailTo,
+            ),
+          ListTile(
+            title: Text('About', style: style),
+            leading: const Icon(Icons.info_outline),
+            onTap: _showAboutDialog,
+          ),
         ],
       ),
     );
@@ -184,5 +186,16 @@ class _MoreSettingsState extends State<MoreSettings> {
     }
 
     return const SizedBox();
+  }
+
+  Widget? getCloseButton() {
+    final parentRoute = ModalRoute.of(context);
+    final canPop = parentRoute?.canPop ?? false;
+    if (canPop) {
+      final bool useCloseButton =
+          parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
+      return useCloseButton ? const CloseButton() : const BackButton();
+    }
+    return null;
   }
 }

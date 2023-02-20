@@ -43,6 +43,38 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: getMoreSettings(),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          EasyServicesManager.instance.rateFloatingActionButton() ??
+              const SizedBox(),
+          FloatingActionButton(
+            heroTag: "onFullScreenPressedStandalone",
+            onPressed: () => onPressedStandalone(true),
+            child: const Icon(Icons.launch),
+          ),
+          FloatingActionButton(
+            heroTag: "onPressedStandalone",
+            onPressed: () => onPressedStandalone(false),
+            child: const Icon(Icons.push_pin),
+          )
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+
+  static Widget getMoreSettings() {
     return EasyServicesManager.instance.moreScreen();
+  }
+
+  void onPressedStandalone(bool fullscreenDialog) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          fullscreenDialog: fullscreenDialog,
+          builder: (_) => Scaffold(body: getMoreSettings())),
+    );
   }
 }
