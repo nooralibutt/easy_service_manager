@@ -1,6 +1,6 @@
 name: easy_service_manager
-description: A new Flutter project.
-version: 0.0.1
+description: This Package is used to add post production settings and features like more app settings, in-app-review, app rating system etc.
+version: 1.0.0
 homepage:
 
 environment:
