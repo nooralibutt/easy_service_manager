@@ -13,13 +13,28 @@ class EasyServicesManager {
 
   AppInfo _appInfo = AppInfo();
 
+  /// You have to initialize it on the start of the app
   Future<void> initialize(
-      {final String? appStoreID,
+      {
+      /// This is the appstore app id
+      final String? appStoreID,
+
+      /// This is the apple store more apps link
       final String? itunesMoreAppLink,
+
+      /// This is the google play store account name
       final String? androidDeveloperName,
+
+      /// This is the support email
       final String? supportEmail,
+
+      /// This is the about dialog description
       final String? aboutAppDescription,
+
+      /// This is the app launcher icon asset path
       final String? appIconPath,
+
+      ///  This is the privacy policy text or link
       final String? privacyPolicy}) async {
     final info = await PackageInfo.fromPlatform();
     await EasyRatingManager.incrementAppLaunches();
@@ -38,8 +53,10 @@ class EasyServicesManager {
     );
   }
 
+  ///  This will return more setting screen
   Widget moreScreen() => MoreSettings(appInfo: _appInfo);
 
+  /// This will return rate floating action button if user haven't rated yet
   Widget? rateFloatingActionButton() {
     if (EasyRatingManager.isAlreadyRated ||
         (Platform.isIOS && _appInfo.appStoreID == null)) {
@@ -48,10 +65,12 @@ class EasyServicesManager {
     return RateFloatingButton(appStoreId: _appInfo.appStoreID);
   }
 
+  /// This will return custom rating dialog if you want to show rating dialog on your own
   Future<bool> tryShowingCustomInAppReview(BuildContext context) =>
       EasyRatingManager.tryShowingCustomInAppReview(
           context, _appInfo.appStoreID);
 
+  /// This will return custom in app review dialog if you want to show in app review dialog on your own
   Future<bool> tryShowingNativeInAppReview() =>
       EasyRatingManager.tryShowingNativeInAppReview();
 }

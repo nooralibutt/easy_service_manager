@@ -1,39 +1,65 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Easy Services Manager
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+[![pub package](https://img.shields.io/pub/v/easy_service_manager.svg?logo=dart&logoColor=00b9fc)](https://pub.dartlang.org/packages/easy_service_manager)
+[![License](https://img.shields.io/github/license/nooralibutt/easy_service_manager?logo=open-source-initiative&logoColor=green)](https://github.com/nooralibutt/easy_service_manager/blob/master/LICENSE)
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+**Show some 💙, 👍 the package & ⭐️ the repo to support the project**
 
 ## Features
+- Support for More Settings Screen
+- Support for google play store and Appstore Rating system
+- Support for in app review system
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+## How to use
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### Initialization
+Initialize `EasyServicesManager` on the start of the app
 
 ```dart
-const like = 'sample';
+await EasyServicesManager.instance.initialize(
+aboutAppDescription: 'You can add the app description here.',
+supportEmail: 'mail@example.com',
+itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+androidDeveloperName: 'TikTok+Pte.+Ltd',
+appStoreID: '835599320',
+privacyPolicy: 'This is the privacy policy here.',
+);
 ```
 
-## Additional information
+There are two ways to use More Setting Screen.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+### 1: Stand-Alone App mode for more setting screen
+
+```dart
+Navigator.of(context).push(
+MaterialPageRoute(
+fullscreenDialog: fullscreenDialog,
+builder: (_) => Scaffold(body: EasyServicesManager.instance.moreScreen())),
+);
+```
+
+### 2: Add more setting screen to Widget-Tree
+
+```dart
+EasyServicesManager.instance.moreScreen();
+```
+
+### 3: Show Rate Floating Action Button
+
+```dart
+EasyServicesManager.instance.rateFloatingActionButton();
+```
+
+### 4: Show Custom In App Review Dialog
+
+```dart
+EasyServicesManager.instance.tryShowingCustomInAppReview();
+```
+
+## Authors
+##### Noor Ali Butt
+[![GitHub Follow](https://img.shields.io/badge/Connect--blue.svg?logo=Github&longCache=true&style=social&label=Follow)](https://github.com/nooralibutt) [![LinkedIn Link](https://img.shields.io/badge/Connect--blue.svg?logo=linkedin&longCache=true&style=social&label=Connect
+)](https://www.linkedin.com/in/nooralibutt)
+##### Hanzla Waheed
+[![GitHub Follow](https://img.shields.io/badge/Connect--blue.svg?logo=Github&longCache=true&style=social&label=Follow)](https://github.com/mhanzla80) [![LinkedIn Link](https://img.shields.io/badge/Connect--blue.svg?logo=linkedin&longCache=true&style=social&label=Connect
+)](https://www.linkedin.com/in/mhanzla80)
