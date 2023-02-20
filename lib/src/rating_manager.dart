@@ -22,7 +22,6 @@ class _RateFloatingButtonState extends State<RateFloatingButton>
   void initState() {
     super.initState();
 
-    if (RatingManager.isAlreadyRated) return;
     controller = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
 
@@ -40,7 +39,7 @@ class _RateFloatingButtonState extends State<RateFloatingButton>
 
   @override
   Widget build(BuildContext context) {
-    if (RatingManager.isAlreadyRated || controller == null) {
+    if (controller == null) {
       return const SizedBox();
     }
 
@@ -55,7 +54,7 @@ class _RateFloatingButtonState extends State<RateFloatingButton>
 
     final button = FloatingActionButton(
       onPressed: () =>
-          RatingManager.showRatingDialog(context, widget.appStoreId),
+          EasyRatingManager.showRatingDialog(context, widget.appStoreId),
       child: const Icon(Icons.star, size: 30),
     );
 
@@ -73,9 +72,9 @@ class _RateFloatingButtonState extends State<RateFloatingButton>
   }
 }
 
-class RatingManager {
-  static const _keyAppLaunches = "appLaunches2";
-  static const _keyAlreadyRated = "rated2";
+class EasyRatingManager {
+  static const _keyAppLaunches = "keyEasyRatingAppLaunches";
+  static const _keyAlreadyRated = "keyEasyRatingRated";
 
   static SharedPreferences? _prefs;
 
@@ -86,7 +85,7 @@ class RatingManager {
   static void setAlreadyRated({bool rated = true}) =>
       _prefs?.setBool(_keyAlreadyRated, rated);
 
-  static void incrementAppLaunches() async {
+  static Future<void> incrementAppLaunches() async {
     if (_prefs == null) await _init();
     _prefs?.setInt(_keyAppLaunches, getAppLaunches() + 1);
   }

@@ -43,6 +43,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return EasyServicesManager.instance.moreScreen();
+    return Scaffold(
+      body: EasyServicesManager.instance.moreScreen(),
+      floatingActionButton:
+          EasyServicesManager.instance.rateFloatingActionButton(),
+    );
   }
 }
