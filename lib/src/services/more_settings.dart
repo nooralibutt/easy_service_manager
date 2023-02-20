@@ -119,8 +119,9 @@ class _MoreSettingsState extends State<MoreSettings> {
   }
 
   void _launchURL(String url) async {
-    if (await canLaunchUrl(Uri(path: url))) {
-      await launchUrl(Uri(path: url));
+    final canLaunch = await canLaunchUrl(Uri.parse(url));
+    if (canLaunch) {
+      await launchUrl((Uri.parse(url)));
     } else {
       _showDialog(
           'Failed', 'Failed to launch. Please check your internet connection');
