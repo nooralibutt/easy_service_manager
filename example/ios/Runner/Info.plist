@@ -20,6 +20,12 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>AppLovinSdkKey</key>
+	<string>YOUR_APPLOVIN_SDK_KEY</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-9376647217016516~8077090206</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>

@@ -1,7 +1,18 @@
 import 'package:easy_service_manager/easy_service_manager.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await EasyServicesManager.instance.initialize(
+    aboutAppDescription: 'You can add the app description here.',
+    supportEmail: 'mail@example.com',
+    itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+    androidDeveloperName: 'TikTok+Pte.+Ltd',
+    appStoreID: '835599320',
+    privacyPolicy: 'This is the privacy policy here.',
+  );
+
   runApp(const MyApp());
 }
 
@@ -28,19 +39,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
-    EasyServicesManager.instance.initialize(
-      aboutAppDescription: 'You can add the app description here.',
-      supportEmail: 'mail@example.com',
-      itunesMoreAppLink: 'tiktok-ltd/id1322881000',
-      androidDeveloperName: 'TikTok+Pte.+Ltd',
-      appStoreID: '835599320',
-      privacyPolicy: 'This is the privacy policy here.',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

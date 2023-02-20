@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:easy_service_manager/src/privacy_policy_screen.dart';
+import 'package:easy_service_manager/src/services/privacy_policy_screen.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
