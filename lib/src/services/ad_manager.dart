@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:easy_service_manager/src/services/ad_setting.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
@@ -46,7 +45,7 @@ class AdManager {
     final requestConf =
         RequestConfiguration(maxAdContentRating: MaxAdContentRating.t);
     await EasyAds.instance.initialize(
-      kDebugMode ? const TestAdIdManager() : adIdManager,
+      adIdManager,
       admobConfiguration: requestConf,
       adMobAdRequest: targetingInfo,
       showAdBadge: isAndroidApproving,
