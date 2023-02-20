@@ -41,8 +41,8 @@ class EasyServicesManager {
   Widget moreScreen() => MoreSettings(appInfo: _appInfo);
 
   Widget? rateFloatingActionButton() {
-    if ((Platform.isIOS && _appInfo.appStoreID == null) ||
-        EasyRatingManager.isAlreadyRated) {
+    if (EasyRatingManager.isAlreadyRated ||
+        (Platform.isIOS && _appInfo.appStoreID == null)) {
       return null;
     }
     return RateFloatingButton(appStoreId: _appInfo.appStoreID);
