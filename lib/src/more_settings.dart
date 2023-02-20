@@ -23,20 +23,11 @@ class _MoreSettingsState extends State<MoreSettings> {
     final theme = Theme.of(context);
     final style = theme.textTheme.titleLarge;
 
-    final parentRoute = ModalRoute.of(this.context);
-    final canPop = parentRoute?.canPop ?? false;
-    Widget? leading;
-    if (canPop) {
-      final bool useCloseButton =
-          parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
-      leading = useCloseButton ? const CloseButton() : const BackButton();
-    }
-
     return Scaffold(
       body: ListView(
         children: [
           ListTile(
-            leading: leading,
+            leading: getCloseButton(),
             title: Text(
               ' Settings',
               style: theme.textTheme.headlineLarge!
@@ -196,18 +187,15 @@ class _MoreSettingsState extends State<MoreSettings> {
 
     return const SizedBox();
   }
-}
 
-class MaybeCloseButton extends StatelessWidget {
-  final BuildContext context;
-  const MaybeCloseButton(this.context, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final parentRoute = ModalRoute.of(this.context);
+  Widget? getCloseButton() {
+    final parentRoute = ModalRoute.of(context);
     final canPop = parentRoute?.canPop ?? false;
-    return canPop
-        ? CloseButton(onPressed: Navigator.of(this.context).pop)
-        : const SizedBox();
+    if (canPop) {
+      final bool useCloseButton =
+          parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
+      return useCloseButton ? const CloseButton() : const BackButton();
+    }
+    return null;
   }
 }
