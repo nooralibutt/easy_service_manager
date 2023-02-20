@@ -16,6 +16,7 @@ class EasyServicesManager {
 
   AppInfo _appInfo = AppInfo();
   final AdManager _adManager = AdManager();
+  RemoteConfigSettings _adSetting = const RemoteConfigSettings();
 
   /// You have to initialize it on the start of the app
   Future<void> initialize(
@@ -52,14 +53,16 @@ class EasyServicesManager {
     final info = await PackageInfo.fromPlatform();
 
     if (remoteConfigEndpointUrl != null && remoteConfigEndpointUrl.isNotEmpty) {
-      await AdSetting.fetch(remoteConfigEndpointUrl);
+      _adSetting = await RemoteConfigSettings.fetch(remoteConfigEndpointUrl);
     }
 
     await EasyRatingManager.incrementAppLaunches();
 
     if (adIdManager != null) {
       await _adManager.initialize(
-          adIdManager: adIdManager, adKeywords: adKeywords);
+          adIdManager: adIdManager,
+          adKeywords: adKeywords,
+          adSetting: _adSetting);
     }
 
     _appInfo = AppInfo(

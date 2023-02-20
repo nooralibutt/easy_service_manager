@@ -26,30 +26,43 @@ const _defaultAdPriority = [
   AdPriority.any
 ];
 
-class AdSetting {
-  static AdSetting singleton = const AdSetting();
-
+class RemoteConfigSettings {
   final List<AdPriority> adPriorityList;
   final List<AdPriority> bannerAdPriorityList;
   final bool isAndroidApproving;
   final bool isIosApproving;
   final int interstitialCounter;
+  final Map<String, dynamic> remoteWallpapers;
+  final Map<String, dynamic> remoteChatLevels;
+  final Map<String, dynamic> remotePresentationData;
+  final Map<String, dynamic> remoteQuizLevelCategories;
+  final Map<String, dynamic> remoteRawData;
 
-  const AdSetting({
+  const RemoteConfigSettings({
     this.adPriorityList = _defaultAdPriority,
     this.bannerAdPriorityList = _defaultAdPriority,
     this.interstitialCounter = 2,
     this.isIosApproving = true,
     this.isAndroidApproving = true,
+    this.remoteWallpapers = const {},
+    this.remoteChatLevels = const {},
+    this.remotePresentationData = const {},
+    this.remoteQuizLevelCategories = const {},
+    this.remoteRawData = const {},
   });
 
-  factory AdSetting._fromMap(Map<String, dynamic> map) {
-    return AdSetting(
+  factory RemoteConfigSettings._fromMap(Map<String, dynamic> map) {
+    return RemoteConfigSettings(
       adPriorityList: _toList(map["ad_priority"]),
       bannerAdPriorityList: _toList(map["banner_ad_priority"]),
       interstitialCounter: map["interstitial_ad_count"],
       isAndroidApproving: map["is_android_approving"] ?? true,
       isIosApproving: map["is_ios_approving"] ?? true,
+      remoteWallpapers: map["wallpapers"] ?? const {},
+      remoteChatLevels: map["chatLevels"] ?? const {},
+      remotePresentationData: map["presentationData"] ?? const {},
+      remoteQuizLevelCategories: map["quizLevelCategories"] ?? const {},
+      remoteRawData: map["rawData"] ?? const {},
     );
   }
 
@@ -74,7 +87,8 @@ class AdSetting {
     return list;
   }
 
-  static Future<void> fetch(String remoteConfigEndpointUrl) async {
+  static Future<RemoteConfigSettings> fetch(
+      String remoteConfigEndpointUrl) async {
     try {
       final url = Uri.https(remoteConfigEndpointUrl);
       final response = await http.get(url,
@@ -82,10 +96,11 @@ class AdSetting {
       if (response.statusCode == 200) {
         final str = utf8.decode(response.bodyBytes).replaceAll('\n', '');
         final decodedResponse = jsonDecode(str) as Map<String, dynamic>;
-        AdSetting.singleton = AdSetting._fromMap(decodedResponse);
+        return RemoteConfigSettings._fromMap(decodedResponse);
       }
     } catch (e) {
       if (kDebugMode) print(e);
     }
+    return const RemoteConfigSettings();
   }
 }
