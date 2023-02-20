@@ -50,8 +50,8 @@ class EasyServicesManager {
       ///  This is the privacy policy text or link
       final String? privacyPolicy}) async {
     final info = await PackageInfo.fromPlatform();
-    await EasyRatingManager.incrementAppLaunches();
     await AdSetting.fetch(remoteConfigEndpointUrl);
+    await EasyRatingManager.incrementAppLaunches();
 
     await _adManager.initialize(
         adIdManager: adIdManager ?? const TestAdIdManager(),
@@ -100,7 +100,8 @@ class EasyServicesManager {
       _adManager.showInterstitial(onInterstitialClosed: onInterstitialClosed);
 
   /// This will show the Interstitial ad with count from the remote config settings
-  void showCountedInterstitial() => _adManager.showCountedInterstitial();
+  void showCountedInterstitial({Function? onInterstitialClosed}) => _adManager
+      .showCountedInterstitial(onInterstitialClosed: onInterstitialClosed);
 
   /// This will show the Rewarded ad
   void showRewardedAd({Function? onRewardedClosed}) =>

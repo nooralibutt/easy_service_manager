@@ -112,10 +112,11 @@ class AdManager {
   }
 
   int _count = 0;
-  void showCountedInterstitial() {
+  void showCountedInterstitial({Function? onInterstitialClosed}) {
     _count++;
     final serverCounter = AdSetting.singleton.interstitialCounter;
-    if (_count >= serverCounter && _showPriorityInterstitial()) {
+    if (_count >= serverCounter &&
+        showInterstitial(onInterstitialClosed: onInterstitialClosed)) {
       _count = 0;
     }
   }
