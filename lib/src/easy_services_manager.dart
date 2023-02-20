@@ -50,12 +50,17 @@ class EasyServicesManager {
       ///  This is the privacy policy text or link
       final String? privacyPolicy}) async {
     final info = await PackageInfo.fromPlatform();
-    await AdSetting.fetch(remoteConfigEndpointUrl);
+
+    if (remoteConfigEndpointUrl != null && remoteConfigEndpointUrl.isNotEmpty) {
+      await AdSetting.fetch(remoteConfigEndpointUrl);
+    }
+
     await EasyRatingManager.incrementAppLaunches();
 
-    await _adManager.initialize(
-        adIdManager: adIdManager ?? const TestAdIdManager(),
-        adKeywords: adKeywords);
+    if (adIdManager != null) {
+      await _adManager.initialize(
+          adIdManager: adIdManager, adKeywords: adKeywords);
+    }
 
     _appInfo = AppInfo(
       appStoreID: appStoreID,

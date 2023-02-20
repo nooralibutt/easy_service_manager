@@ -74,11 +74,7 @@ class AdSetting {
     return list;
   }
 
-  static Future<void> fetch(String? remoteConfigEndpointUrl) async {
-    if (remoteConfigEndpointUrl == null || remoteConfigEndpointUrl.isEmpty) {
-      return;
-    }
-
+  static Future<void> fetch(String remoteConfigEndpointUrl) async {
     try {
       final url = Uri.https(remoteConfigEndpointUrl);
       final response = await http.get(url,
