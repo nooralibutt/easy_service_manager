@@ -18,6 +18,7 @@ dependencies:
   shared_preferences: ^2.0.17
   easy_ads_flutter: ^2.3.0
   app_tracking_transparency: ^2.0.3
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
