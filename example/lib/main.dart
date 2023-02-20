@@ -45,12 +45,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: getMoreSettings(),
-      floatingActionButton:
-          EasyServicesManager.instance.rateFloatingActionButton(),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          EasyServicesManager.instance.rateFloatingActionButton() ??
+              const SizedBox(),
+          FloatingActionButton(
+            heroTag: "onPressedStandalone",
+            onPressed: onPressedStandalone,
+            child: const Icon(Icons.launch),
+          )
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
   static Widget getMoreSettings() {
     return EasyServicesManager.instance.moreScreen();
+  }
+
+  void onPressedStandalone() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (_) => Scaffold(body: getMoreSettings())),
+    );
   }
 }
