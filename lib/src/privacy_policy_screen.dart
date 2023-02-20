@@ -16,7 +16,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Text(privacyPolicy ?? ''),
+            child: Text(privacyPolicy),
           ),
         ),
       ),
