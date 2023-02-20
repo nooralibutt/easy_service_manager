@@ -51,9 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
           EasyServicesManager.instance.rateFloatingActionButton() ??
               const SizedBox(),
           FloatingActionButton(
-            heroTag: "onPressedStandalone",
-            onPressed: onPressedStandalone,
+            heroTag: "onFullScreenPressedStandalone",
+            onPressed: () => onPressedStandalone(true),
             child: const Icon(Icons.launch),
+          ),
+          FloatingActionButton(
+            heroTag: "onPressedStandalone",
+            onPressed: () => onPressedStandalone(false),
+            child: const Icon(Icons.push_pin),
           )
         ],
       ),
@@ -65,10 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return EasyServicesManager.instance.moreScreen();
   }
 
-  void onPressedStandalone() {
+  void onPressedStandalone(bool fullscreenDialog) {
     Navigator.of(context).push(
       MaterialPageRoute(
-          fullscreenDialog: true,
+          fullscreenDialog: fullscreenDialog,
           builder: (_) => Scaffold(body: getMoreSettings())),
     );
   }
