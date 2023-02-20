@@ -1,10 +1,5 @@
 # Easy Services Manager
 
-[![pub package](https://img.shields.io/pub/v/easy_service_manager.svg?logo=dart&logoColor=00b9fc)](https://pub.dartlang.org/packages/easy_service_manager)
-[![License](https://img.shields.io/github/license/nooralibutt/easy_service_manager?logo=open-source-initiative&logoColor=green)](https://github.com/nooralibutt/easy_service_manager/blob/master/LICENSE)
-
-**Show some 💙, 👍 the package & ⭐️ the repo to support the project**
-
 ## Features
 - Support for More Settings Screen
 - Support for google play store and Appstore Rating system
