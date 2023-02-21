@@ -108,7 +108,7 @@ class EasyServicesManager {
       _notificationManager = EasyNotificationManager();
       _notificationsList = notificationsList;
       await _notificationManager?.init(appInfo: _appInfo);
-      if ((_notificationsList != null && _notificationsList!.isNotEmpty) &&
+      if ((_notificationsList?.isNotEmpty ?? false) &&
           isAutoScheduleNotification) scheduleAllNotifications();
     }
   }
@@ -172,7 +172,7 @@ class EasyServicesManager {
 
   /// Call this to schedule all local notifications
   void scheduleAllNotifications() {
-    if (_notificationsList == null || _notificationsList!.isEmpty) return;
+    if (_notificationsList?.isEmpty ?? true) return;
     _notificationManager?.scheduleAllNotifications(_notificationsList!);
   }
 
