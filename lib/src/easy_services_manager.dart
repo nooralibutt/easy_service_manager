@@ -68,6 +68,9 @@ class EasyServicesManager {
 
     ///  For Scheduling local notifications, provide notifications list here
     final List<String>? notificationsList,
+
+    ///  if `isAutoScheduleNotification = true`, manager schedule provided notifications list here automatically
+    final bool isAutoScheduleNotification = true,
   }) async {
     final packageInfo = await PackageInfo.fromPlatform();
 
@@ -100,6 +103,7 @@ class EasyServicesManager {
     if (notificationsList != null && notificationsList.isNotEmpty) {
       this.notificationsList = notificationsList;
       await notificationManager.init(appInfo: _appInfo);
+      if (isAutoScheduleNotification) scheduleAllNotifications();
     }
   }
 
@@ -160,8 +164,30 @@ class EasyServicesManager {
     }
   }
 
+  /// Call this to schedule local notifications
   void scheduleAllNotifications() {
     if (notificationsList == null || notificationsList!.isEmpty) return;
     notificationManager.scheduleAllNotifications(notificationsList!);
   }
+
+  Future<void> scheduleNotification(
+          NotificationModel model, Duration duration) =>
+      notificationManager.scheduleNotification(model, duration);
+
+  Future<void> cancelNotification(int id, {String? tag}) =>
+      notificationManager.cancelNotification(id, tag: tag);
+}
+
+class NotificationModel {
+  NotificationModel({
+    required this.id,
+    required this.title,
+    required this.body,
+    this.payload,
+  });
+
+  final int id;
+  final String title;
+  final String body;
+  final String? payload;
 }

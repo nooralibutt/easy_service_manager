@@ -5,15 +5,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await EasyServicesManager.instance.initialize(
-      adIdManager: const TestAdIdManager(),
-      aboutAppDescription: 'You can add the app description here.',
-      supportEmail: 'mail@example.com',
-      itunesMoreAppLink: 'tiktok-ltd/id1322881000',
-      androidDeveloperName: 'TikTok+Pte.+Ltd',
-      appStoreID: '835599320',
-      privacyPolicy: 'This is the privacy policy here.',
-      remoteConfigEndpointUrl: 'nooralibutt.github.io/sample.json',
-      wallpapersKey: _wallpapersKeyMapper);
+    adIdManager: const TestAdIdManager(),
+    aboutAppDescription: 'You can add the app description here.',
+    supportEmail: 'mail@example.com',
+    itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+    androidDeveloperName: 'TikTok+Pte.+Ltd',
+    appStoreID: '835599320',
+    privacyPolicy: 'This is the privacy policy here.',
+    remoteConfigEndpointUrl: 'nooralibutt.github.io/sample.json',
+    wallpapersKey: _wallpapersKeyMapper,
+    notificationsList: const [
+      'This is the 1st notification',
+      'This is the 2nd notification',
+      'This is the 3rd notification',
+      'This is the 4th notification',
+    ],
+  );
 
   runApp(const MyApp());
 }

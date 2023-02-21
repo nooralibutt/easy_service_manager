@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_service_manager/src/easy_services_manager.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -84,7 +85,7 @@ class EasyNotificationManager {
     await _cancelAllNotifications();
 
     for (int i = 0; i < 32; i++) {
-      await _scheduleNotificationDaily(
+      await scheduleNotification(
           NotificationModel(
               id: i,
               title: appInfo?.appName ?? '',
@@ -93,7 +94,7 @@ class EasyNotificationManager {
     }
   }
 
-  Future<void> _scheduleNotificationDaily(
+  Future<void> scheduleNotification(
       NotificationModel model, Duration duration) async {
     await _flutterLocalNotificationsPlugin.zonedSchedule(
         model.id,
@@ -114,18 +115,7 @@ class EasyNotificationManager {
 
   Future<void> _cancelAllNotifications() =>
       _flutterLocalNotificationsPlugin.cancelAll();
-}
 
-class NotificationModel {
-  NotificationModel({
-    required this.id,
-    required this.title,
-    required this.body,
-    this.payload,
-  });
-
-  final int id;
-  final String title;
-  final String body;
-  final String? payload;
+  Future<void> cancelNotification(int id, {String? tag}) =>
+      _flutterLocalNotificationsPlugin.cancel(id, tag: tag);
 }

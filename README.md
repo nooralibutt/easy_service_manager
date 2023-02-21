@@ -6,6 +6,7 @@
 - Support for `in_app_review` system
 - Support for `easy_ads_flutter` system
 - Support for remote settings and json data like wallpapers etc
+- Support for `flutter_local_notifications`
 
 ## How to use
 
@@ -33,7 +34,13 @@ Add `AdIdManager()` class in the initializer of the `EasyServicesManager` like t
 EasyServicesManager.instance.initialize(adIdManager: const TestAdIdManager())
 ```
 
+### - How to get remote data form the EasyServicesManager
 
+you can get the remote data from the `EasyServicesManager` as follow:
+
+```dart
+EasyServicesManager.instance.remoteConfig
+```
 
 There are two ways to use More Setting Screen.
 
@@ -89,6 +96,38 @@ EasyServicesManager.instance.showCountedInterstitialAd();
 EasyServicesManager.instance.showRewardedAd();
 ```
 
+### 6: How to schedule local notifications
+#### - For Android
+- For implement local notifications, you have to add app icon with the  name `app_icon.png` inside the android drawable `android/app/src/main/res/drawable`
+
+You have to pass the notification list in the initializer of `EasyServicesManager`. If you do not provide the notifications list then local notifications will not be initialize.
+### - Initialization
+```dart
+EasyServicesManager.instance.initialize(
+    notificationsList: const [
+      'This is the 1st notification',
+      'This is the 2nd notification',
+      'This is the 3rd notification',
+      'This is the 4th notification',
+    ],
+);
+```
+### - Usage
+##### - To Schedule All Notifications List
+Call the following method to schedule all notifications list
+```dart
+EasyServicesManager.instance.scheduleAllNotifications();
+```
+##### - To Schedule Single Notification
+Call the following method to schedule single notification
+```dart
+EasyServicesManager.instance.scheduleNotification();
+```
+##### - To Cancel Notification
+Call the following method to cancel single notification
+```dart
+EasyServicesManager.instance.cancelNotification();
+```
 ## Authors
 ##### Noor Ali Butt
 [![GitHub Follow](https://img.shields.io/badge/Connect--blue.svg?logo=Github&longCache=true&style=social&label=Follow)](https://github.com/nooralibutt) [![LinkedIn Link](https://img.shields.io/badge/Connect--blue.svg?logo=linkedin&longCache=true&style=social&label=Connect
