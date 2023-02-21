@@ -163,16 +163,18 @@ class EasyServicesManager {
     }
   }
 
-  /// Call this to schedule local notifications
+  /// Call this to schedule all local notifications
   void scheduleAllNotifications() {
     if (_notificationsList == null || _notificationsList!.isEmpty) return;
     _notificationManager.scheduleAllNotifications(_notificationsList!);
   }
 
+  /// Call this to schedule single notification
   Future<void> scheduleNotification(
           NotificationModel model, Duration duration) =>
       _notificationManager.scheduleNotification(model, duration);
 
+  /// Call this to cancel single notification
   Future<void> cancelNotification(int id, {String? tag}) =>
       _notificationManager.cancelNotification(id, tag: tag);
 }
