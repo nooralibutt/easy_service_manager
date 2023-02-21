@@ -14,6 +14,8 @@ void main() async {
     privacyPolicy: 'This is the privacy policy here.',
     remoteConfigEndpointUrl: 'nooralibutt.github.io/sample.json',
     wallpapersKey: _wallpapersKeyMapper,
+    useNotifications: true,
+    isAutoScheduleNotification: true,
     notificationsList: const [
       'This is the 1st notification',
       'This is the 2nd notification',
