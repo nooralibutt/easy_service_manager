@@ -11,16 +11,17 @@ class AdManager {
   List<AdPriority>? adPriorityList;
   List<AdNetwork>? bannerAdPriorityList;
   StreamSubscription? _streamSubscription;
-  RemoteConfigSettings adSetting = const RemoteConfigSettings();
+  RemoteConfigSettings? adSetting;
 
   Future<void> initialize(
       {required IAdIdManager adIdManager,
       List<String>? adKeywords,
-      required RemoteConfigSettings adSetting}) async {
+      RemoteConfigSettings? adSetting}) async {
     this.adSetting = adSetting;
-    final isIosApproving = Platform.isIOS && this.adSetting.isIosApproving;
+    final isIosApproving =
+        Platform.isIOS && (this.adSetting?.isIosApproving ?? true);
     final isAndroidApproving =
-        Platform.isAndroid && this.adSetting.isAndroidApproving;
+        Platform.isAndroid && (this.adSetting?.isAndroidApproving ?? true);
 
     if (Platform.isIOS) {
       TrackingStatus status =
@@ -57,8 +58,8 @@ class AdManager {
       isAgeRestrictedUserForApplovin: isIosApproving || isAndroidApproving,
     );
 
-    adPriorityList = adSetting.adPriorityList;
-    bannerAdPriorityList = adSetting.getBannerPriorityList();
+    adPriorityList = adSetting?.adPriorityList ?? [];
+    bannerAdPriorityList = adSetting?.getBannerPriorityList();
   }
 
   Widget showPriorityBanner({AdSize adSize = AdSize.banner}) {
@@ -117,7 +118,7 @@ class AdManager {
   int _count = 0;
   void showCountedInterstitial({Function? onInterstitialClosed}) {
     _count++;
-    final serverCounter = adSetting.interstitialCounter ?? 2;
+    final serverCounter = adSetting?.interstitialCounter ?? 2;
     if (_count >= serverCounter &&
         showInterstitial(onInterstitialClosed: onInterstitialClosed)) {
       _count = 0;

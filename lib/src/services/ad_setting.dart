@@ -32,11 +32,11 @@ class RemoteConfigSettings {
   final bool isAndroidApproving;
   final bool isIosApproving;
   final int interstitialCounter;
-  final Map<String, dynamic> remoteWallpapers;
-  final Map<String, dynamic> remoteChatLevels;
-  final Map<String, dynamic> remotePresentationData;
-  final Map<String, dynamic> remoteQuizLevelCategories;
-  final Map<String, dynamic> remoteRawData;
+  final Map<String, dynamic> wallpapersData;
+  final Map<String, dynamic> chatLevelsData;
+  final Map<String, dynamic> presentationData;
+  final Map<String, dynamic> quizLevelCategoriesData;
+  final Map<String, dynamic> rawData;
 
   const RemoteConfigSettings({
     this.adPriorityList = _defaultAdPriority,
@@ -44,11 +44,11 @@ class RemoteConfigSettings {
     this.interstitialCounter = 2,
     this.isIosApproving = true,
     this.isAndroidApproving = true,
-    this.remoteWallpapers = const {},
-    this.remoteChatLevels = const {},
-    this.remotePresentationData = const {},
-    this.remoteQuizLevelCategories = const {},
-    this.remoteRawData = const {},
+    this.wallpapersData = const {},
+    this.chatLevelsData = const {},
+    this.presentationData = const {},
+    this.quizLevelCategoriesData = const {},
+    this.rawData = const {},
   });
 
   factory RemoteConfigSettings._fromMap(Map<String, dynamic> map) {
@@ -58,11 +58,11 @@ class RemoteConfigSettings {
       interstitialCounter: map["interstitial_ad_count"],
       isAndroidApproving: map["is_android_approving"] ?? true,
       isIosApproving: map["is_ios_approving"] ?? true,
-      remoteWallpapers: map["wallpapers"] ?? const {},
-      remoteChatLevels: map["chatLevels"] ?? const {},
-      remotePresentationData: map["presentationData"] ?? const {},
-      remoteQuizLevelCategories: map["quizLevelCategories"] ?? const {},
-      remoteRawData: map["rawData"] ?? const {},
+      wallpapersData: map["wallpapers"] ?? const {},
+      chatLevelsData: map["chatLevels"] ?? const {},
+      presentationData: map["presentationData"] ?? const {},
+      quizLevelCategoriesData: map["quizLevelCategories"] ?? const {},
+      rawData: map["rawData"] ?? const {},
     );
   }
 
