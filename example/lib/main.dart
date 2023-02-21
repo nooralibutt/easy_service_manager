@@ -5,13 +5,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await EasyServicesManager.instance.initialize(
-    aboutAppDescription: 'You can add the app description here.',
-    supportEmail: 'mail@example.com',
-    itunesMoreAppLink: 'tiktok-ltd/id1322881000',
-    androidDeveloperName: 'TikTok+Pte.+Ltd',
-    appStoreID: '835599320',
-    privacyPolicy: 'This is the privacy policy here.',
-  );
+      aboutAppDescription: 'You can add the app description here.',
+      supportEmail: 'mail@example.com',
+      itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+      androidDeveloperName: 'TikTok+Pte.+Ltd',
+      appStoreID: '835599320',
+      privacyPolicy: 'This is the privacy policy here.',
+      remoteConfigEndpointUrl:
+          'nooralibutt.github.io/ff-wallpapers-with-settings.json');
 
   runApp(const MyApp());
 }

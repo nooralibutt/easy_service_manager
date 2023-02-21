@@ -32,10 +32,10 @@ class RemoteConfig {
   final bool isAndroidApproving;
   final bool isIosApproving;
   final int interstitialCounter;
-  final Map<String, dynamic> wallpapersData;
-  final Map<String, dynamic> chatLevelsData;
-  final Map<String, dynamic> presentationData;
-  final Map<String, dynamic> quizLevelCategoriesData;
+  final Map<String, dynamic>? wallpapersData;
+  final Map<String, dynamic>? chatLevelsData;
+  final Map<String, dynamic>? presentationData;
+  final Map<String, dynamic>? quizLevelCategoriesData;
 
   const RemoteConfig({
     this.adPriorityList = _defaultAdPriority,
@@ -43,10 +43,10 @@ class RemoteConfig {
     this.interstitialCounter = 2,
     this.isIosApproving = true,
     this.isAndroidApproving = true,
-    this.wallpapersData = const {},
-    this.chatLevelsData = const {},
-    this.presentationData = const {},
-    this.quizLevelCategoriesData = const {},
+    this.wallpapersData,
+    this.chatLevelsData,
+    this.presentationData,
+    this.quizLevelCategoriesData,
   });
 
   factory RemoteConfig.fromMap(
@@ -56,12 +56,14 @@ class RemoteConfig {
     final key =
         wallpapersKey?.call(isAndroidApproving, isIosApproving) ?? 'wallpapers';
 
+    final adSettings = map["ad_settings"];
+
     return RemoteConfig(
-      adPriorityList: _toList(map["ad_priority"]),
-      bannerAdPriorityList: _toList(map["banner_ad_priority"]),
-      interstitialCounter: map["interstitial_ad_count"],
-      isAndroidApproving: map["is_android_approving"] ?? true,
-      isIosApproving: map["is_ios_approving"] ?? true,
+      adPriorityList: _toList(adSettings["ad_priority"]),
+      bannerAdPriorityList: _toList(adSettings["banner_ad_priority"]),
+      interstitialCounter: adSettings["interstitial_ad_count"],
+      isAndroidApproving: adSettings["is_android_approving"] ?? true,
+      isIosApproving: adSettings["is_ios_approving"] ?? true,
       wallpapersData: map[key] ?? map["data"],
       chatLevelsData: map["chatLevels"],
       presentationData: map["presentationData"],

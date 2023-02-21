@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:easy_service_manager/src/services/ad_manager.dart';
-import 'package:easy_service_manager/src/services/ad_setting.dart';
 import 'package:easy_service_manager/src/services/more_settings.dart';
 import 'package:easy_service_manager/src/services/rating_manager.dart';
+import 'package:easy_service_manager/src/services/remote_config.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +131,11 @@ class EasyServicesManager {
   Future<void> _fetch(
       String endpointUrl, RemoteConfigKeyMapper? wallpapersKey) async {
     try {
-      final url = Uri.https(endpointUrl);
+      final startIndex = endpointUrl.indexOf('/');
+      final domain = endpointUrl.substring(0, startIndex);
+      final endpoint = endpointUrl.substring(startIndex, endpointUrl.length);
+
+      final url = Uri.https(domain, endpoint);
       final response = await http.get(url,
           headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'});
       if (response.statusCode == 200) {
