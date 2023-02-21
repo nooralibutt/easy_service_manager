@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:easy_service_manager/src/easy_services_manager.dart';
-import 'package:easy_service_manager/src/utils/app_info.dart';
+import 'package:easy_service_manager/src/models/app_info.dart';
+import 'package:easy_service_manager/src/models/notification_model.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;

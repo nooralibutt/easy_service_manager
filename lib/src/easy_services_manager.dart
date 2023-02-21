@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
+import 'package:easy_service_manager/src/models/app_info.dart';
+import 'package:easy_service_manager/src/models/notification_model.dart';
 import 'package:easy_service_manager/src/services/ad_manager.dart';
 import 'package:easy_service_manager/src/services/easy_notification_manager.dart';
 import 'package:easy_service_manager/src/services/more_settings.dart';
 import 'package:easy_service_manager/src/services/rating_manager.dart';
 import 'package:easy_service_manager/src/services/remote_config.dart';
-import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -103,7 +104,8 @@ class EasyServicesManager {
 
     _notificationsList = notificationsList;
     await _notificationManager.init(appInfo: _appInfo);
-    if (isAutoScheduleNotification) scheduleAllNotifications();
+    if ((_notificationsList != null && _notificationsList!.isNotEmpty) &&
+        isAutoScheduleNotification) scheduleAllNotifications();
   }
 
   ///  This will return more setting screen
@@ -177,18 +179,4 @@ class EasyServicesManager {
   /// Call this to cancel single notification
   Future<void> cancelNotification(int id, {String? tag}) =>
       _notificationManager.cancelNotification(id, tag: tag);
-}
-
-class NotificationModel {
-  NotificationModel({
-    required this.id,
-    required this.title,
-    required this.body,
-    this.payload,
-  });
-
-  final int id;
-  final String title;
-  final String body;
-  final String? payload;
 }
