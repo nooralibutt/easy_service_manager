@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:easy_service_manager/src/privacy_policy_screen.dart';
+import 'package:easy_service_manager/src/services/privacy_policy_screen.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -119,8 +119,9 @@ class _MoreSettingsState extends State<MoreSettings> {
   }
 
   void _launchURL(String url) async {
-    if (await canLaunchUrl(Uri(path: url))) {
-      await launchUrl(Uri(path: url));
+    final canLaunch = await canLaunchUrl(Uri.parse(url));
+    if (canLaunch) {
+      await launchUrl((Uri.parse(url)));
     } else {
       _showDialog(
           'Failed', 'Failed to launch. Please check your internet connection');
