@@ -11,17 +11,17 @@ class AdManager {
   List<AdPriority>? adPriorityList;
   List<AdNetwork>? bannerAdPriorityList;
   StreamSubscription? _streamSubscription;
-  RemoteConfigSettings? adSetting;
+  RemoteConfig? adSetting;
 
   Future<void> initialize(
       {required IAdIdManager adIdManager,
       List<String>? adKeywords,
-      RemoteConfigSettings? adSetting}) async {
+      RemoteConfig? adSetting}) async {
     this.adSetting = adSetting;
     final isIosApproving =
-        Platform.isIOS && (this.adSetting?.isIosApproving ?? true);
+        Platform.isIOS && (adSetting?.isIosApproving ?? true);
     final isAndroidApproving =
-        Platform.isAndroid && (this.adSetting?.isAndroidApproving ?? true);
+        Platform.isAndroid && (adSetting?.isAndroidApproving ?? true);
 
     if (Platform.isIOS) {
       TrackingStatus status =
@@ -47,8 +47,10 @@ class AdManager {
         nonPersonalizedAds: !isIosApproving || !isAndroidApproving,
         keywords: adKeywords);
 
-    final requestConf =
-        RequestConfiguration(maxAdContentRating: MaxAdContentRating.t);
+    final requestConf = RequestConfiguration(
+        maxAdContentRating: isIosApproving || isAndroidApproving
+            ? MaxAdContentRating.pg
+            : MaxAdContentRating.t);
     await EasyAds.instance.initialize(
       adIdManager,
       admobConfiguration: requestConf,

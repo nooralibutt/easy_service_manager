@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 
 enum AdPriority { admob, appLovin, unity, facebook, any }
 
@@ -26,7 +23,10 @@ const _defaultAdPriority = [
   AdPriority.any
 ];
 
-class RemoteConfigSettings {
+typedef RemoteConfigKeyMapper = String Function(
+    bool isAndroidApproving, bool isIosApproving);
+
+class RemoteConfig {
   final List<AdPriority> adPriorityList;
   final List<AdPriority> bannerAdPriorityList;
   final bool isAndroidApproving;
@@ -36,9 +36,8 @@ class RemoteConfigSettings {
   final Map<String, dynamic> chatLevelsData;
   final Map<String, dynamic> presentationData;
   final Map<String, dynamic> quizLevelCategoriesData;
-  final Map<String, dynamic> rawData;
 
-  const RemoteConfigSettings({
+  const RemoteConfig({
     this.adPriorityList = _defaultAdPriority,
     this.bannerAdPriorityList = _defaultAdPriority,
     this.interstitialCounter = 2,
@@ -48,21 +47,25 @@ class RemoteConfigSettings {
     this.chatLevelsData = const {},
     this.presentationData = const {},
     this.quizLevelCategoriesData = const {},
-    this.rawData = const {},
   });
 
-  factory RemoteConfigSettings._fromMap(Map<String, dynamic> map) {
-    return RemoteConfigSettings(
+  factory RemoteConfig.fromMap(
+      Map<String, dynamic> map, RemoteConfigKeyMapper? wallpapersKey) {
+    final isAndroidApproving = map["is_android_approving"] ?? true;
+    final isIosApproving = map["is_ios_approving"] ?? true;
+    final key =
+        wallpapersKey?.call(isAndroidApproving, isIosApproving) ?? 'wallpapers';
+
+    return RemoteConfig(
       adPriorityList: _toList(map["ad_priority"]),
       bannerAdPriorityList: _toList(map["banner_ad_priority"]),
       interstitialCounter: map["interstitial_ad_count"],
       isAndroidApproving: map["is_android_approving"] ?? true,
       isIosApproving: map["is_ios_approving"] ?? true,
-      wallpapersData: map["wallpapers"] ?? const {},
-      chatLevelsData: map["chatLevels"] ?? const {},
-      presentationData: map["presentationData"] ?? const {},
-      quizLevelCategoriesData: map["quizLevelCategories"] ?? const {},
-      rawData: map["rawData"] ?? const {},
+      wallpapersData: map[key] ?? map["data"],
+      chatLevelsData: map["chatLevels"],
+      presentationData: map["presentationData"],
+      quizLevelCategoriesData: map["quizLevelCategories"],
     );
   }
 
@@ -85,22 +88,5 @@ class RemoteConfigSettings {
       }
     }
     return list;
-  }
-
-  static Future<RemoteConfigSettings> fetch(
-      String remoteConfigEndpointUrl) async {
-    try {
-      final url = Uri.https(remoteConfigEndpointUrl);
-      final response = await http.get(url,
-          headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'});
-      if (response.statusCode == 200) {
-        final str = utf8.decode(response.bodyBytes).replaceAll('\n', '');
-        final decodedResponse = jsonDecode(str) as Map<String, dynamic>;
-        return RemoteConfigSettings._fromMap(decodedResponse);
-      }
-    } catch (e) {
-      if (kDebugMode) print(e);
-    }
-    return const RemoteConfigSettings();
   }
 }

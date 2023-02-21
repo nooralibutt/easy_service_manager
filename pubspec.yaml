@@ -19,6 +19,7 @@ dependencies:
   easy_ads_flutter: ^2.3.0
   app_tracking_transparency: ^2.0.3
   http: ^0.13.5
+  unity_ads_plugin: ^0.3.7
 
 dev_dependencies:
   flutter_test:

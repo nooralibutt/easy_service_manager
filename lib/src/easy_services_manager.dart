@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
@@ -6,7 +7,9 @@ import 'package:easy_service_manager/src/services/ad_setting.dart';
 import 'package:easy_service_manager/src/services/more_settings.dart';
 import 'package:easy_service_manager/src/services/rating_manager.dart';
 import 'package:easy_service_manager/src/utils/app_info.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
 class EasyServicesManager {
@@ -16,44 +19,54 @@ class EasyServicesManager {
 
   AppInfo _appInfo = AppInfo();
   final AdManager _adManager = AdManager();
-  RemoteConfigSettings _adSetting = const RemoteConfigSettings();
+
+  /// Standard remote config fetched from server
+  RemoteConfig? get remoteConfig => _remoteConfig;
+  RemoteConfig? _remoteConfig;
+
+  /// It will contain all the raw data fetched from server, you can use your own parser to parse it.
+  Map<String, dynamic>? get remoteRawConfig => _remoteRawConfig;
+  Map<String, dynamic>? _remoteRawConfig;
 
   /// You have to initialize it on the start of the app
-  Future<void> initialize(
-      {
-      /// This is the appstore app id
-      final String? appStoreID,
+  Future<void> initialize({
+    /// This is the appstore app id
+    final String? appStoreID,
 
-      /// This is the apple store more apps link
-      final String? itunesMoreAppLink,
+    /// This is the apple store more apps link
+    final String? itunesMoreAppLink,
 
-      /// This is the google play store account name
-      final String? androidDeveloperName,
+    /// This is the google play store account name
+    final String? androidDeveloperName,
 
-      /// This is the support email
-      final String? supportEmail,
+    /// This is the support email
+    final String? supportEmail,
 
-      /// This is the about dialog description
-      final String? aboutAppDescription,
+    /// This is the about dialog description
+    final String? aboutAppDescription,
 
-      /// This is the app launcher icon asset path
-      final String? appIconPath,
+    /// This is the app launcher icon asset path
+    final String? appIconPath,
 
-      /// These are the add keywords
-      final List<String>? adKeywords,
+    /// These are the add keywords
+    final List<String>? adKeywords,
 
-      /// These are the add keywords
-      final IAdIdManager? adIdManager,
+    /// These are the add keywords
+    final IAdIdManager? adIdManager,
 
-      /// This is the app remote configuration settings endpoint url
-      final String? remoteConfigEndpointUrl,
+    /// This is the app remote configuration settings endpoint url
+    final String? remoteConfigEndpointUrl,
 
-      ///  This is the privacy policy text or link
-      final String? privacyPolicy}) async {
-    final info = await PackageInfo.fromPlatform();
+    ///  This is the privacy policy text or link
+    final String? privacyPolicy,
+
+    ///  For custom key of wallpapers
+    final RemoteConfigKeyMapper? wallpapersKey,
+  }) async {
+    final packageInfo = await PackageInfo.fromPlatform();
 
     if (remoteConfigEndpointUrl != null && remoteConfigEndpointUrl.isNotEmpty) {
-      _adSetting = await RemoteConfigSettings.fetch(remoteConfigEndpointUrl);
+      await _fetch(remoteConfigEndpointUrl, wallpapersKey);
     }
 
     await EasyRatingManager.incrementAppLaunches();
@@ -62,7 +75,7 @@ class EasyServicesManager {
       await _adManager.initialize(
           adIdManager: adIdManager,
           adKeywords: adKeywords,
-          adSetting: _adSetting);
+          adSetting: _remoteConfig);
     }
 
     _appInfo = AppInfo(
@@ -73,9 +86,9 @@ class EasyServicesManager {
       aboutAppDescription: aboutAppDescription,
       appIconPath: appIconPath,
       privacyPolicy: privacyPolicy,
-      appName: info.appName,
-      packageName: info.packageName,
-      versionAndBuild: '${info.version}+${info.buildNumber}',
+      appName: packageInfo.appName,
+      packageName: packageInfo.packageName,
+      versionAndBuild: '${packageInfo.version}+${packageInfo.buildNumber}',
     );
   }
 
@@ -114,4 +127,21 @@ class EasyServicesManager {
   /// This will show the Rewarded ad
   void showRewardedAd({Function? onRewardedClosed}) =>
       _adManager.showRewardedAd(onRewardedClosed: onRewardedClosed);
+
+  Future<void> _fetch(
+      String endpointUrl, RemoteConfigKeyMapper? wallpapersKey) async {
+    try {
+      final url = Uri.https(endpointUrl);
+      final response = await http.get(url,
+          headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'});
+      if (response.statusCode == 200) {
+        final str = utf8.decode(response.bodyBytes).replaceAll('\n', '');
+        final decodedResponse = jsonDecode(str) as Map<String, dynamic>;
+        _remoteRawConfig = decodedResponse;
+        _remoteConfig = RemoteConfig.fromMap(decodedResponse, wallpapersKey);
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+  }
 }
