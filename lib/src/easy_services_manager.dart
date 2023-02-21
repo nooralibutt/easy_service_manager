@@ -100,7 +100,6 @@ class EasyServicesManager {
     if (notificationsList != null && notificationsList.isNotEmpty) {
       this.notificationsList = notificationsList;
       await notificationManager.init(appInfo: _appInfo);
-      scheduleAllNotifications();
     }
   }
 
@@ -161,8 +160,8 @@ class EasyServicesManager {
     }
   }
 
-  Future<void> scheduleAllNotifications() async {
+  void scheduleAllNotifications() {
     if (notificationsList == null || notificationsList!.isEmpty) return;
-    await notificationManager.scheduleAllNotifications(notificationsList!);
+    notificationManager.scheduleAllNotifications(notificationsList!);
   }
 }

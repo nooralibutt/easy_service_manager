@@ -17,18 +17,15 @@ class EasyNotificationManager {
 
     /// Note: permissions aren't requested here just to demonstrate that can be
     /// done later
-    final DarwinInitializationSettings initializationSettingsDarwin =
+    const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
-      onDidReceiveLocalNotification:
-          (int id, String? title, String? body, String? payload) {},
     );
-    final settings = InitializationSettings(
-      android: androidSettings,
-      iOS: initializationSettingsDarwin,
-    );
+    const settings = InitializationSettings(
+        android: androidSettings, iOS: initializationSettingsDarwin);
+
     _flutterLocalNotificationsPlugin.initialize(settings);
 
     tz.initializeTimeZones();
