@@ -20,8 +20,9 @@ class EasyServicesManager {
 
   AppInfo _appInfo = AppInfo();
   final AdManager _adManager = AdManager();
-  final EasyNotificationManager notificationManager = EasyNotificationManager();
-  List<String>? notificationsList;
+  final EasyNotificationManager _notificationManager =
+      EasyNotificationManager();
+  List<String>? _notificationsList;
 
   /// Standard remote config fetched from server
   RemoteConfig? get remoteConfig => _remoteConfig;
@@ -100,11 +101,9 @@ class EasyServicesManager {
       versionAndBuild: '${packageInfo.version}+${packageInfo.buildNumber}',
     );
 
-    if (notificationsList != null && notificationsList.isNotEmpty) {
-      this.notificationsList = notificationsList;
-      await notificationManager.init(appInfo: _appInfo);
-      if (isAutoScheduleNotification) scheduleAllNotifications();
-    }
+    _notificationsList = notificationsList;
+    await _notificationManager.init(appInfo: _appInfo);
+    if (isAutoScheduleNotification) scheduleAllNotifications();
   }
 
   ///  This will return more setting screen
@@ -166,16 +165,16 @@ class EasyServicesManager {
 
   /// Call this to schedule local notifications
   void scheduleAllNotifications() {
-    if (notificationsList == null || notificationsList!.isEmpty) return;
-    notificationManager.scheduleAllNotifications(notificationsList!);
+    if (_notificationsList == null || _notificationsList!.isEmpty) return;
+    _notificationManager.scheduleAllNotifications(_notificationsList!);
   }
 
   Future<void> scheduleNotification(
           NotificationModel model, Duration duration) =>
-      notificationManager.scheduleNotification(model, duration);
+      _notificationManager.scheduleNotification(model, duration);
 
   Future<void> cancelNotification(int id, {String? tag}) =>
-      notificationManager.cancelNotification(id, tag: tag);
+      _notificationManager.cancelNotification(id, tag: tag);
 }
 
 class NotificationModel {
