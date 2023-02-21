@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
+import 'package:easy_service_manager/src/models/app_info.dart';
+import 'package:easy_service_manager/src/models/notification_model.dart';
 import 'package:easy_service_manager/src/services/ad_manager.dart';
+import 'package:easy_service_manager/src/services/easy_notification_manager.dart';
 import 'package:easy_service_manager/src/services/more_settings.dart';
 import 'package:easy_service_manager/src/services/rating_manager.dart';
 import 'package:easy_service_manager/src/services/remote_config.dart';
-import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +21,8 @@ class EasyServicesManager {
 
   AppInfo _appInfo = AppInfo();
   final AdManager _adManager = AdManager();
+  EasyNotificationManager? _notificationManager;
+  List<String>? _notificationsList;
 
   /// Standard remote config fetched from server
   RemoteConfig? get remoteConfig => _remoteConfig;
@@ -62,6 +66,15 @@ class EasyServicesManager {
 
     ///  For custom key of wallpapers
     final RemoteConfigKeyMapper? wallpapersKey,
+
+    ///  if `useNotifications = true`, manager will initialize local notifications
+    final bool useNotifications = false,
+
+    ///  For Scheduling local notifications, provide notifications list here
+    final List<String>? notificationsList,
+
+    ///  if `isAutoScheduleNotification = true`, manager schedule provided notifications list here automatically
+    final bool isAutoScheduleNotification = true,
   }) async {
     final packageInfo = await PackageInfo.fromPlatform();
 
@@ -90,6 +103,14 @@ class EasyServicesManager {
       packageName: packageInfo.packageName,
       versionAndBuild: '${packageInfo.version}+${packageInfo.buildNumber}',
     );
+
+    if (useNotifications) {
+      _notificationManager = EasyNotificationManager();
+      _notificationsList = notificationsList;
+      await _notificationManager?.init(appInfo: _appInfo);
+      if ((_notificationsList?.isNotEmpty ?? false) &&
+          isAutoScheduleNotification) scheduleAllNotifications();
+    }
   }
 
   ///  This will return more setting screen
@@ -148,4 +169,19 @@ class EasyServicesManager {
       if (kDebugMode) print(e);
     }
   }
+
+  /// Call this to schedule all local notifications
+  void scheduleAllNotifications() {
+    if (_notificationsList?.isEmpty ?? true) return;
+    _notificationManager?.scheduleAllNotifications(_notificationsList!);
+  }
+
+  /// Call this to schedule single notification
+  Future<void>? scheduleNotification(
+          NotificationModel model, Duration duration) =>
+      _notificationManager?.scheduleNotification(model, duration);
+
+  /// Call this to cancel single notification
+  Future<void>? cancelNotification(int id, {String? tag}) =>
+      _notificationManager?.cancelNotification(id, tag: tag);
 }

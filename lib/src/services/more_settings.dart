@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:easy_service_manager/src/models/app_info.dart';
 import 'package:easy_service_manager/src/services/privacy_policy_screen.dart';
-import 'package:easy_service_manager/src/utils/app_info.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
