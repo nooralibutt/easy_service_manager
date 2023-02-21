@@ -51,7 +51,7 @@ class EasyServicesManager {
     /// These are the add keywords
     final List<String>? adKeywords,
 
-    /// These are the add keywords
+    /// It will be your easy ads AdIdManager
     final IAdIdManager? adIdManager,
 
     /// This is the app remote configuration settings endpoint url
