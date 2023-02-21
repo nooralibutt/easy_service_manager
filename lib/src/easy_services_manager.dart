@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:easy_service_manager/src/services/ad_manager.dart';
+import 'package:easy_service_manager/src/services/easy_notification_manager.dart';
 import 'package:easy_service_manager/src/services/more_settings.dart';
 import 'package:easy_service_manager/src/services/rating_manager.dart';
 import 'package:easy_service_manager/src/services/remote_config.dart';
@@ -19,6 +20,8 @@ class EasyServicesManager {
 
   AppInfo _appInfo = AppInfo();
   final AdManager _adManager = AdManager();
+  final EasyNotificationManager notificationManager = EasyNotificationManager();
+  List<String>? notificationsList;
 
   /// Standard remote config fetched from server
   RemoteConfig? get remoteConfig => _remoteConfig;
@@ -62,6 +65,9 @@ class EasyServicesManager {
 
     ///  For custom key of wallpapers
     final RemoteConfigKeyMapper? wallpapersKey,
+
+    ///  For Scheduling local notifications, provide notifications list here
+    final List<String>? notificationsList,
   }) async {
     final packageInfo = await PackageInfo.fromPlatform();
 
@@ -90,6 +96,12 @@ class EasyServicesManager {
       packageName: packageInfo.packageName,
       versionAndBuild: '${packageInfo.version}+${packageInfo.buildNumber}',
     );
+
+    if (notificationsList != null && notificationsList.isNotEmpty) {
+      this.notificationsList = notificationsList;
+      await notificationManager.init(appInfo: _appInfo);
+      scheduleAllNotifications();
+    }
   }
 
   ///  This will return more setting screen
@@ -147,5 +159,10 @@ class EasyServicesManager {
     } catch (e) {
       if (kDebugMode) print(e);
     }
+  }
+
+  Future<void> scheduleAllNotifications() async {
+    if (notificationsList == null || notificationsList!.isEmpty) return;
+    await notificationManager.scheduleAllNotifications(notificationsList!);
   }
 }
