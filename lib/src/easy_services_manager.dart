@@ -28,7 +28,7 @@ class EasyServicesManager {
   Map<String, dynamic>? get remoteRawConfig => _remoteRawConfig;
   Map<String, dynamic>? _remoteRawConfig;
 
-  /// You have to initialize it on the start of the app
+  /// You must have to initialize it on the start of the app
   Future<void> initialize({
     /// This is the appstore app id
     final String? appStoreID,
@@ -114,14 +114,14 @@ class EasyServicesManager {
       EasyRatingManager.tryShowingNativeInAppReview();
 
   /// This will show the banner ad as widget
-  Widget showBanner() => _adManager.showPriorityBanner();
+  Widget showBannerAd() => _adManager.showPriorityBanner();
 
   /// This will show the Interstitial ad
-  bool showInterstitial({Function? onInterstitialClosed}) =>
+  bool showInterstitialAd({Function? onInterstitialClosed}) =>
       _adManager.showInterstitial(onInterstitialClosed: onInterstitialClosed);
 
   /// This will show the Interstitial ad with count from the remote config settings
-  void showCountedInterstitial({Function? onInterstitialClosed}) => _adManager
+  void showCountedInterstitialAd({Function? onInterstitialClosed}) => _adManager
       .showCountedInterstitial(onInterstitialClosed: onInterstitialClosed);
 
   /// This will show the Rewarded ad

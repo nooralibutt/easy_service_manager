@@ -3,7 +3,9 @@
 ## Features
 - Support for More Settings Screen
 - Support for google play store and Appstore Rating system
-- Support for in app review system
+- Support for `in_app_review` system
+- Support for `easy_ads_flutter` system
+- Support for remote settings and json data like wallpapers etc
 
 ## How to use
 
@@ -12,14 +14,26 @@ Initialize `EasyServicesManager` on the start of the app
 
 ```dart
 await EasyServicesManager.instance.initialize(
-aboutAppDescription: 'You can add the app description here.',
-supportEmail: 'mail@example.com',
-itunesMoreAppLink: 'tiktok-ltd/id1322881000',
-androidDeveloperName: 'TikTok+Pte.+Ltd',
-appStoreID: '835599320',
-privacyPolicy: 'This is the privacy policy here.',
+    adIdManager: const TestAdIdManager(),
+    aboutAppDescription: 'You can add the app description here.',
+    supportEmail: 'mail@example.com',
+    itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+    androidDeveloperName: 'TikTok+Pte.+Ltd',
+    appStoreID: '835599320',
+    privacyPolicy: 'This is the privacy policy here.',
+    remoteConfigEndpointUrl: 'domain/YOUR_ENDPOINT.json',
+    wallpapersKey: _wallpapersKeyMapper
 );
 ```
+### How to Integrate EasyAds
+For Integrate `easy_ads_flutter`, you can see the readme of the package guide, see [easy_ads_flutter](https://pub.dev/packages/easy_ads_flutter) for better understanding how to add easy_ads_flutter.
+Add `AdIdManager()` class in the initializer of the `EasyServicesManager` like this
+
+```dart
+EasyServicesManager.instance.initialize(adIdManager: const TestAdIdManager())
+```
+
+
 
 There are two ways to use More Setting Screen.
 
@@ -27,9 +41,9 @@ There are two ways to use More Setting Screen.
 
 ```dart
 Navigator.of(context).push(
-MaterialPageRoute(
-fullscreenDialog: fullscreenDialog,
-builder: (_) => Scaffold(body: EasyServicesManager.instance.moreScreen())),
+    MaterialPageRoute(
+    fullscreenDialog: fullscreenDialog,
+    builder: (_) => Scaffold(body: EasyServicesManager.instance.moreScreen())),
 );
 ```
 
@@ -49,6 +63,30 @@ EasyServicesManager.instance.rateFloatingActionButton();
 
 ```dart
 EasyServicesManager.instance.tryShowingCustomInAppReview();
+```
+
+### 5: How to show ads
+You can show banner, Interstitial and rewarded ads like this
+
+#### - For Banner ad
+
+```dart
+EasyServicesManager.instance.showBannerAd();
+```
+
+#### - For Interstitial ad
+```dart
+EasyServicesManager.instance.showInterstitialAd();
+```
+
+#### - For Counted Interstitial ad
+```dart
+EasyServicesManager.instance.showCountedInterstitialAd();
+```
+
+#### - For Rewarded ad
+```dart
+EasyServicesManager.instance.showRewardedAd();
 ```
 
 ## Authors
