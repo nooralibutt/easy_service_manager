@@ -21,8 +21,7 @@ class EasyServicesManager {
 
   AppInfo _appInfo = AppInfo();
   final AdManager _adManager = AdManager();
-  final EasyNotificationManager _notificationManager =
-      EasyNotificationManager();
+  EasyNotificationManager? _notificationManager;
   List<String>? _notificationsList;
 
   /// Standard remote config fetched from server
@@ -68,6 +67,9 @@ class EasyServicesManager {
     ///  For custom key of wallpapers
     final RemoteConfigKeyMapper? wallpapersKey,
 
+    ///  if `useNotifications = true`, manager will initialize local notifications
+    final bool useNotifications = false,
+
     ///  For Scheduling local notifications, provide notifications list here
     final List<String>? notificationsList,
 
@@ -102,10 +104,13 @@ class EasyServicesManager {
       versionAndBuild: '${packageInfo.version}+${packageInfo.buildNumber}',
     );
 
-    _notificationsList = notificationsList;
-    await _notificationManager.init(appInfo: _appInfo);
-    if ((_notificationsList != null && _notificationsList!.isNotEmpty) &&
-        isAutoScheduleNotification) scheduleAllNotifications();
+    if (useNotifications) {
+      _notificationManager = EasyNotificationManager();
+      _notificationsList = notificationsList;
+      await _notificationManager?.init(appInfo: _appInfo);
+      if ((_notificationsList != null && _notificationsList!.isNotEmpty) &&
+          isAutoScheduleNotification) scheduleAllNotifications();
+    }
   }
 
   ///  This will return more setting screen
@@ -168,15 +173,15 @@ class EasyServicesManager {
   /// Call this to schedule all local notifications
   void scheduleAllNotifications() {
     if (_notificationsList == null || _notificationsList!.isEmpty) return;
-    _notificationManager.scheduleAllNotifications(_notificationsList!);
+    _notificationManager?.scheduleAllNotifications(_notificationsList!);
   }
 
   /// Call this to schedule single notification
-  Future<void> scheduleNotification(
+  Future<void>? scheduleNotification(
           NotificationModel model, Duration duration) =>
-      _notificationManager.scheduleNotification(model, duration);
+      _notificationManager?.scheduleNotification(model, duration);
 
   /// Call this to cancel single notification
-  Future<void> cancelNotification(int id, {String? tag}) =>
-      _notificationManager.cancelNotification(id, tag: tag);
+  Future<void>? cancelNotification(int id, {String? tag}) =>
+      _notificationManager?.cancelNotification(id, tag: tag);
 }

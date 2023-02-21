@@ -1,5 +1,5 @@
 class NotificationModel {
-  NotificationModel({
+  const NotificationModel({
     required this.id,
     required this.title,
     required this.body,
