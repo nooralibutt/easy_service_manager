@@ -3,10 +3,10 @@
 ## Features
 - Support for More Settings Screen
 - Support for google play store and Appstore Rating system
-- Support for `in_app_review` system
-- Support for `easy_ads_flutter` system
+- Support for [`in_app_review`](https://pub.dev/packages/in_app_review)
+- Support for [`easy_ads_flutter`](https://pub.dev/packages/easy_ads_flutter)
 - Support for remote settings and json data like wallpapers etc
-- Support for `flutter_local_notifications`
+- Support for [`flutter_local_notifications`](https://pub.dev/packages/flutter_local_notifications)
 
 ## How to use
 
@@ -104,12 +104,12 @@ You have to pass the notification list in the initializer of `EasyServicesManage
 ### - Initialization
 ```dart
 EasyServicesManager.instance.initialize(
-    notificationsList: const [
-      'This is the 1st notification',
-      'This is the 2nd notification',
-      'This is the 3rd notification',
-      'This is the 4th notification',
-    ],
+notificationsList: const [
+'This is the 1st notification',
+'This is the 2nd notification',
+'This is the 3rd notification',
+'This is the 4th notification',
+],
 );
 ```
 ### - Usage

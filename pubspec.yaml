@@ -1,6 +1,6 @@
 name: easy_service_manager
 description: This Package is used to add post production settings and features like more app settings, in-app-review, app rating system etc.
-version: 1.1.0
+version: 1.1.1
 homepage: https://pub.dartlang.org/packages/easy_service_manager
 
 environment:
