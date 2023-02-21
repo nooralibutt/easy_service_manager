@@ -5,6 +5,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await EasyServicesManager.instance.initialize(
+      adIdManager: const TestAdIdManager(),
       aboutAppDescription: 'You can add the app description here.',
       supportEmail: 'mail@example.com',
       itunesMoreAppLink: 'tiktok-ltd/id1322881000',
