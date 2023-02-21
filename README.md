@@ -26,12 +26,23 @@ await EasyServicesManager.instance.initialize(
     wallpapersKey: _wallpapersKeyMapper
 );
 ```
+
 ### How to Integrate EasyAds
 For Integrate `easy_ads_flutter`, you can see the readme of the package guide, see [easy_ads_flutter](https://pub.dev/packages/easy_ads_flutter) for better understanding how to add easy_ads_flutter.
 Add `AdIdManager()` class in the initializer of the `EasyServicesManager` like this
 
 ```dart
 EasyServicesManager.instance.initialize(adIdManager: const TestAdIdManager())
+```
+
+### - IOS Tracking Transparency Permissions
+For tracking transparency permissions you must have to add the following permissions:
+
+```xml
+<key>NSUserTrackingUsageDescription</key>
+<string>This identifier will be used to deliver personalized ads to you.</string>
+<key>ITSAppUsesNonExemptEncryption</key>
+<false/>
 ```
 
 ### - How to get remote data form the EasyServicesManager
