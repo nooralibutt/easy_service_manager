@@ -11,8 +11,8 @@ void main() async {
       androidDeveloperName: 'TikTok+Pte.+Ltd',
       appStoreID: '835599320',
       privacyPolicy: 'This is the privacy policy here.',
-      remoteConfigEndpointUrl:
-          'nooralibutt.github.io/ff-wallpapers-with-settings.json');
+      remoteConfigEndpointUrl: 'nooralibutt.github.io/sample.json',
+      wallpapersKey: _wallpapersKeyMapper);
 
   runApp(const MyApp());
 }
@@ -76,4 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
           builder: (_) => Scaffold(body: getMoreSettings())),
     );
   }
+}
+
+String _wallpapersKeyMapper(bool isAndroidApproving, bool isIosApproving) {
+  if (isAndroidApproving || isIosApproving) return 'approving_wallpapers';
+  return 'wallpapers';
 }

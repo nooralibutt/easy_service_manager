@@ -51,30 +51,37 @@ class RemoteConfig {
 
   factory RemoteConfig.fromMap(
       Map<String, dynamic> map, RemoteConfigKeyMapper? wallpapersKey) {
-    final isAndroidApproving = map["is_android_approving"] ?? true;
-    final isIosApproving = map["is_ios_approving"] ?? true;
+    // For legacy support
+    final adSettings = map["ad_settings"] ?? map;
+
+    final isAndroidApproving = adSettings["is_android_approving"] ?? true;
+    final isIosApproving = adSettings["is_ios_approving"] ?? true;
     final key =
         wallpapersKey?.call(isAndroidApproving, isIosApproving) ?? 'wallpapers';
-
-    final adSettings = map["ad_settings"];
 
     return RemoteConfig(
       adPriorityList: _toList(adSettings["ad_priority"]),
       bannerAdPriorityList: _toList(adSettings["banner_ad_priority"]),
-      interstitialCounter: adSettings["interstitial_ad_count"],
-      isAndroidApproving: adSettings["is_android_approving"] ?? true,
-      isIosApproving: adSettings["is_ios_approving"] ?? true,
+      interstitialCounter: adSettings["interstitial_ad_count"] ?? 4,
+      isAndroidApproving: isAndroidApproving,
+      isIosApproving: isIosApproving,
       wallpapersData: map[key] ?? map["data"],
-      chatLevelsData: map["chatLevels"],
-      presentationData: map["presentationData"],
-      quizLevelCategoriesData: map["quizLevelCategories"],
+      chatLevelsData: map["chat_levels"],
+      presentationData: map["presentation_data"],
+      quizLevelCategoriesData: map["quiz_level_categories"],
     );
   }
 
-  static List<AdPriority> _toList(final List<dynamic> list) => list
-      .map<AdPriority>(
-          (e) => adPriorityStringToEnumMap[e.toString()] ?? AdPriority.any)
-      .toList();
+  static List<AdPriority> _toList(final List<dynamic>? list) {
+    if (list == null) {
+      return _defaultAdPriority;
+    } else {
+      return list
+          .map<AdPriority>(
+              (e) => adPriorityStringToEnumMap[e.toString()] ?? AdPriority.any)
+          .toList();
+    }
+  }
 
   List<AdNetwork> getBannerPriorityList() {
     final List<AdNetwork> list = [];
