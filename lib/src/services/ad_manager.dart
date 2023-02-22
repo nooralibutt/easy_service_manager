@@ -64,6 +64,8 @@ class AdManager {
     bannerAdPriorityList = adSetting?.getBannerPriorityList();
   }
 
+  void showAppOpenAd() => EasyAds.instance.showAd(AdUnitType.appOpen);
+
   Widget showPriorityBanner({AdSize adSize = AdSize.banner}) {
     final list = bannerAdPriorityList;
     if (list == null || list.isEmpty) {
