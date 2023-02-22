@@ -134,8 +134,12 @@ class EasyServicesManager {
   Future<bool> tryShowingNativeInAppReview() =>
       EasyRatingManager.tryShowingNativeInAppReview();
 
+  /// This will show the AppOpen ad
+  void showAppOpenAd() => _adManager.showAppOpenAd();
+
   /// This will show the banner ad as widget
-  Widget showBannerAd() => _adManager.showPriorityBanner();
+  Widget showBannerAd({AdSize adSize = AdSize.banner}) =>
+      _adManager.showPriorityBanner(adSize: adSize);
 
   /// This will show the Interstitial ad
   bool showInterstitialAd({Function? onInterstitialClosed}) =>
