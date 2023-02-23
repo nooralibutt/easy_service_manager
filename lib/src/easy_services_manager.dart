@@ -114,7 +114,8 @@ class EasyServicesManager {
   }
 
   ///  This will return more setting screen
-  Widget moreScreen() => MoreSettings(appInfo: _appInfo);
+  Widget moreScreen({String? title = 'Settings'}) =>
+      MoreSettings(title: title, appInfo: _appInfo);
 
   /// This will return rate floating action button if user haven't rated yet
   Widget? rateFloatingActionButton() {

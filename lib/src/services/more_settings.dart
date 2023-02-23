@@ -9,7 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MoreSettings extends StatefulWidget {
   final AppInfo appInfo;
-  const MoreSettings({super.key, required this.appInfo});
+  final String? title;
+  const MoreSettings({super.key, required this.appInfo, this.title});
 
   @override
   State<MoreSettings> createState() => _MoreSettingsState();
@@ -28,11 +29,13 @@ class _MoreSettingsState extends State<MoreSettings> {
         children: [
           ListTile(
             leading: getCloseButton(),
-            title: Text(
-              ' Settings',
-              style: theme.textTheme.headlineLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
+            title: widget.title == null
+                ? null
+                : Text(
+                    widget.title!,
+                    style: theme.textTheme.headlineLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
           ),
           const SizedBox(height: 10),
           if (widget.appInfo.privacyPolicy?.isNotEmpty ?? false)

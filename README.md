@@ -86,6 +86,12 @@ EasyServicesManager.instance.tryShowingCustomInAppReview();
 ### 5: How to show ads
 You can show banner, Interstitial and rewarded ads like this
 
+#### - For AppOpen ad
+
+```dart
+EasyServicesManager.instance.showAppOpenAd();
+```
+
 #### - For Banner ad
 
 ```dart
