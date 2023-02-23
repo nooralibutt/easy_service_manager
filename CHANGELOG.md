@@ -1,3 +1,7 @@
+## 1.1.2
+* Add support for Banner Ad size
+* Add support for App Open Ad
+
 ## 1.1.1
 * Add support for [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications)
 
