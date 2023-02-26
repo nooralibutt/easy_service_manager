@@ -8,13 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class WelcomeScreen extends StatefulWidget {
+class WelcomeWidget extends StatefulWidget {
   final AsyncCallback? initializeBuilder;
   final String? nextScreenRouteName;
   final VoidCallback? onDone;
   final bool showAppOpenAd;
+  final String? iconPath;
 
-  const WelcomeScreen({
+  const WelcomeWidget({
+    this.iconPath,
     this.initializeBuilder,
     this.showAppOpenAd = true,
     this.nextScreenRouteName,
@@ -23,10 +25,10 @@ class WelcomeScreen extends StatefulWidget {
   });
 
   @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
+  State<WelcomeWidget> createState() => _WelcomeWidgetState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeWidgetState extends State<WelcomeWidget> {
   static const List<Color> _kDefaultRainbowColors = [
     Colors.red,
     Colors.orange,
@@ -61,15 +63,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: Image.asset(
-                'assets/images/diamonds/diamond_heading.png',
-                width: double.infinity,
-              ),
-            ),
+            if (widget.iconPath != null) buildLogo(),
             Container(
               width: 200,
+              height: 200,
               padding: const EdgeInsets.all(60.0),
               alignment: Alignment.center,
               child: LoadingIndicator(
@@ -100,6 +97,38 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           },
         ),
       ],
+    );
+  }
+
+  Widget buildLogo() {
+    return Container(
+      width: double.infinity,
+      height: 200,
+      padding: const EdgeInsets.all(50.0),
+      child: widget.iconPath!.startsWith('http')
+          ? Image.network(
+              widget.iconPath!,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.contain,
+              loadingBuilder:
+                  (BuildContext context, Widget child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator.adaptive(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded.toDouble() /
+                            (loadingProgress.expectedTotalBytes?.toDouble() ??
+                                1)
+                        : null,
+                  ),
+                );
+              },
+            )
+          : Image.asset(
+              widget.iconPath!,
+              width: double.infinity,
+            ),
     );
   }
 

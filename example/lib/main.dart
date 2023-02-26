@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData.dark(useMaterial3: true),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -33,9 +33,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WelcomeScreen(
+      body: WelcomeWidget(
+        iconPath:
+            'https://crosscode.dev/wp-content/uploads/2022/11/crosscode-horizontal-white.png',
         initializeBuilder: initializeBuilder,
-        onDone: () => onPressedStandalone(true),
+        onDone: () => onPressedStandalone(false),
       ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
