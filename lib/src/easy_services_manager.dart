@@ -131,12 +131,13 @@ class EasyServicesManager {
       EasyRatingManager.tryShowingCustomInAppReview(
           context, _appInfo.appStoreID);
 
-  /// This will return custom in app review dialog if you want to show in app review dialog on your own
-  Future<bool> tryShowingNativeInAppReview() =>
-      EasyRatingManager.tryShowingNativeInAppReview();
+  /// This will return native platform provided in app review dialog based on launch count
+  /// if [forceShow] is true then launch count will be ignored
+  Future<bool> tryShowingNativeInAppReview({bool forceShow = false}) =>
+      EasyRatingManager.tryShowingNativeInAppReview(forceShow);
 
   /// This will show the AppOpen ad
-  void showAppOpenAd() => _adManager.showAppOpenAd();
+  static void showAppOpenAd() => AdManager.showAppOpenAd();
 
   /// This will show the banner ad as widget
   Widget showBannerAd({AdSize adSize = AdSize.banner}) =>
