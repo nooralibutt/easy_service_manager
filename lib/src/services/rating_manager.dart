@@ -138,9 +138,9 @@ class EasyRatingManager {
     );
   }
 
-  static Future<bool> tryShowingNativeInAppReview() async {
+  static Future<bool> tryShowingNativeInAppReview(bool forceShow) async {
     // if launches are 3 then show in app review
-    if (getAppLaunches() % 3 == 0) {
+    if (getAppLaunches() % 3 == 0 || forceShow) {
       final InAppReview inAppReview = InAppReview.instance;
 
       if (await inAppReview.isAvailable()) {

@@ -1,3 +1,8 @@
+## 1.2.0
+* Adds support for welcome screen
+* Adds support for directly showing native dialog
+* Fixes app open ad for static access
+
 ## 1.1.2
 * Add support for Banner Ad size
 * Add support for App Open Ad
