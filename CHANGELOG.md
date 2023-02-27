@@ -1,3 +1,6 @@
+## 1.2.1
+* Update `easy-ads-flutter` to latest version
+
 ## 1.2.0
 * Adds support for welcome screen
 * Adds support for directly showing native dialog

@@ -41,14 +41,14 @@ class AdManager {
     }
 
     await UnityAds.setPrivacyConsent(
-        PrivacyConsentType.ageGate, isIosApproving || isAndroidApproving);
+        PrivacyConsentType.ageGate, isIosApproving || Platform.isAndroid);
 
     final targetingInfo = AdRequest(
         nonPersonalizedAds: !isIosApproving || !isAndroidApproving,
         keywords: adKeywords);
 
     final requestConf = RequestConfiguration(
-        maxAdContentRating: isIosApproving || isAndroidApproving
+        maxAdContentRating: isIosApproving || Platform.isAndroid
             ? MaxAdContentRating.pg
             : MaxAdContentRating.t);
     await EasyAds.instance.initialize(
@@ -57,7 +57,7 @@ class AdManager {
       adMobAdRequest: targetingInfo,
       showAdBadge: isAndroidApproving,
       fbiOSAdvertiserTrackingEnabled: isIosApproving,
-      isAgeRestrictedUserForApplovin: isIosApproving || isAndroidApproving,
+      isAgeRestrictedUserForApplovin: isIosApproving || Platform.isAndroid,
     );
 
     adPriorityList = adSetting?.adPriorityList ?? [];

@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: applovin_max
-      sha256: "6d3cc82973d429b720cfe5423b09a0729dc6128f37bb4a82359874e8415d826c"
+      sha256: c6edbdf6dde829868161f2d2806fc9bf6a6be143ded5b1752deebd3b2952d14c
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.3"
   args:
     dependency: transitive
     description:
@@ -101,10 +101,10 @@ packages:
     dependency: transitive
     description:
       name: easy_ads_flutter
-      sha256: fb6d8f702fb7c767a8a34f9cda6641d2cc9f9deb6fdad31b07189159fac4087d
+      sha256: ddd2688cf998fc30d7b4672a250b66894b784b7b37b169a511dc002584a8da8a
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.1"
   easy_audience_network:
     dependency: transitive
     description:
@@ -119,7 +119,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.2.0"
+    version: "1.2.1"
   fake_async:
     dependency: transitive
     description:
@@ -259,10 +259,10 @@ packages:
     dependency: transitive
     description:
       name: logger
-      sha256: "5076f09225f91dc49289a4ccb92df2eeea9ea01cf7c26d49b3a1f04c6a49eec1"
+      sha256: c40f9ef51e5bffb4ce69ad2d8c8aad7bd47ec109c090521109b63a4e2bc27191
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.2"
   matcher:
     dependency: transitive
     description:
