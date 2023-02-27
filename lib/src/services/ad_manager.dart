@@ -41,7 +41,7 @@ class AdManager {
     }
 
     await UnityAds.setPrivacyConsent(
-        PrivacyConsentType.ageGate, isIosApproving || isAndroidApproving);
+        PrivacyConsentType.ageGate, isIosApproving || Platform.isAndroid);
 
     final targetingInfo = AdRequest(
         nonPersonalizedAds: !isIosApproving || !isAndroidApproving,
