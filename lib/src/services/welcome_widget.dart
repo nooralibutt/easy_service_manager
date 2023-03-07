@@ -160,7 +160,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
       await widget.initializeBuilder?.call();
     }
     final appOpenAdNotAvailable =
-        EasyAds.instance.adIdManager.admobAdIds?.appOpenId == null;
+        EasyAds.instance.adIdManager.admobAdIds?.appOpenId?.isEmpty ?? true;
     if (widget.showAppOpenAd == false || appOpenAdNotAvailable) {
       _scheduleDone();
     }
