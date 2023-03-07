@@ -1,3 +1,6 @@
+## 1.2.3
+* Fixes rate us message
+
 ## 1.2.2
 * Fixes app open ad in welcome screen
 * Adds delayInDone to manage the delay showing after initialization
