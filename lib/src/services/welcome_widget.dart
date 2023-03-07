@@ -15,10 +15,14 @@ class WelcomeWidget extends StatefulWidget {
   final bool showAppOpenAd;
   final String? iconPath;
 
+  /// After initializing or showing app open ad, on done or move to next screen will be called after this delay in SECONDS
+  final int delayInDone;
+
   const WelcomeWidget({
     this.iconPath,
     this.initializeBuilder,
     this.showAppOpenAd = true,
+    this.delayInDone = 2,
     this.nextScreenRouteName,
     this.onDone,
     super.key,
@@ -51,6 +55,10 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
   void dispose() {
     super.dispose();
 
+    _cancelAppOpenAdSubscription();
+  }
+
+  void _cancelAppOpenAdSubscription() {
     _streamSubscription?.cancel();
     _streamSubscription = null;
   }
@@ -85,7 +93,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
               final version =
                   '${snapshot.data?.version}+${snapshot.data?.buildNumber}';
               return Align(
-                alignment: const Alignment(0.8, 1.0),
+                alignment: const Alignment(0.8, 0.9),
                 child: Text(
                   kDebugMode ? 'd$version' : 'r$version',
                   style: Theme.of(context).textTheme.bodySmall,
@@ -132,27 +140,41 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
     );
   }
 
-  Future<void> _initializeEveryThing() async {
-    if (widget.initializeBuilder != null) {
-      await widget.initializeBuilder?.call();
-    }
-
+  void _initializeEveryThing() async {
     if (widget.showAppOpenAd) {
       _streamSubscription = EasyAds.instance.onEvent.listen((event) {
-        if (event.adUnitType == AdUnitType.appOpen &&
-            event.type == AdEventType.adLoaded) {
-          _streamSubscription?.cancel();
-          _streamSubscription = null;
-
-          EasyServicesManager.showAppOpenAd();
+        if (event.adUnitType == AdUnitType.appOpen) {
+          if (event.type == AdEventType.adLoaded) {
+            EasyServicesManager.showAppOpenAd();
+          } else if (event.type == AdEventType.adFailedToLoad ||
+              event.type == AdEventType.adFailedToShow ||
+              event.type == AdEventType.adDismissed) {
+            _cancelAppOpenAdSubscription();
+            _scheduleDone();
+          }
         }
       });
     }
 
-    Future.delayed(const Duration(seconds: 2), _moveToNextScreen);
+    if (widget.initializeBuilder != null) {
+      await widget.initializeBuilder?.call();
+    }
+    final appOpenAdNotAvailable =
+        EasyAds.instance.adIdManager.admobAdIds?.appOpenId == null;
+    if (widget.showAppOpenAd == false || appOpenAdNotAvailable) {
+      _scheduleDone();
+    }
   }
 
-  void _moveToNextScreen() {
+  void _scheduleDone() {
+    Future.delayed(Duration(seconds: widget.delayInDone), _onDone);
+  }
+
+  bool _isAlreadyDone = false;
+  void _onDone() {
+    if (_isAlreadyDone) return;
+    _isAlreadyDone = true;
+
     if (widget.nextScreenRouteName != null) {
       Navigator.pushReplacementNamed(context, widget.nextScreenRouteName!);
     }
