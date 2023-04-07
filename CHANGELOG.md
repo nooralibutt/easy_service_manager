@@ -1,3 +1,6 @@
+## 1.2.4
+* Plugin updates
+
 ## 1.2.3
 * Fixes rate us message
 
