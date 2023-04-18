@@ -1,5 +1,7 @@
 ## 1.2.5
 * Plugin updates
+* Adds android approving check for ads
+* Adds debugger button for admob inspector in settings
 
 ## 1.2.4
 * Plugin updates
