@@ -1,6 +1,6 @@
 name: easy_service_manager
 description: This Package is used to add post production settings and features like more app settings, in-app-review, app rating system etc.
-version: 1.2.4
+version: 1.2.5
 homepage: https://pub.dartlang.org/packages/easy_service_manager
 
 environment:
@@ -11,15 +11,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-  package_info_plus: ^3.0.3
-  share_plus: ^6.3.1
+  package_info_plus: ^3.1.0
+  share_plus: ^6.3.2
   url_launcher: ^6.1.10
   in_app_review: ^2.0.6
   shared_preferences: ^2.1.0
-  easy_ads_flutter: ^2.3.2
+  easy_ads_flutter: ^2.3.3
   app_tracking_transparency: ^2.0.3
   http: ^0.13.5
-  unity_ads_plugin: ^0.3.7
+  unity_ads_plugin: ^0.3.8
   flutter_local_notifications: ^13.0.0
   timezone: ^0.9.1
   loading_indicator: ^3.1.0
