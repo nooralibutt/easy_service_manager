@@ -1,3 +1,7 @@
+## 1.1.2
+* Update Dependencies
+* Add `isShowAppOpenOnAppStateChange` check on initialization
+
 ## 1.1.1
 * Add support for [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications)
 
