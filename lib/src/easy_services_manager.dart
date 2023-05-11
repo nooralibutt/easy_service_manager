@@ -119,7 +119,8 @@ class EasyServicesManager {
   }
 
   ///  This will return more setting screen
-  Widget moreScreen() => MoreSettings(appInfo: _appInfo);
+  Widget moreScreen({String? title = 'Settings'}) =>
+      MoreSettings(title: title, appInfo: _appInfo);
 
   /// This will return rate floating action button if user haven't rated yet
   Widget? rateFloatingActionButton() {
@@ -135,12 +136,17 @@ class EasyServicesManager {
       EasyRatingManager.tryShowingCustomInAppReview(
           context, _appInfo.appStoreID);
 
-  /// This will return custom in app review dialog if you want to show in app review dialog on your own
-  Future<bool> tryShowingNativeInAppReview() =>
-      EasyRatingManager.tryShowingNativeInAppReview();
+  /// This will return native platform provided in app review dialog based on launch count
+  /// if [forceShow] is true then launch count will be ignored
+  Future<bool> tryShowingNativeInAppReview({bool forceShow = false}) =>
+      EasyRatingManager.tryShowingNativeInAppReview(forceShow);
+
+  /// This will show the AppOpen ad
+  static void showAppOpenAd() => AdManager.showAppOpenAd();
 
   /// This will show the banner ad as widget
-  Widget showBannerAd() => _adManager.showPriorityBanner();
+  Widget showBannerAd({AdSize adSize = AdSize.banner}) =>
+      _adManager.showPriorityBanner(adSize: adSize);
 
   /// This will show the Interstitial ad
   bool showInterstitialAd({Function? onInterstitialClosed}) =>

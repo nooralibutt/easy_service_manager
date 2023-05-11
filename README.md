@@ -86,6 +86,12 @@ EasyServicesManager.instance.tryShowingCustomInAppReview();
 ### 5: How to show ads
 You can show banner, Interstitial and rewarded ads like this
 
+#### - For AppOpen ad
+
+```dart
+EasyServicesManager.instance.showAppOpenAd();
+```
+
 #### - For Banner ad
 
 ```dart
@@ -139,6 +145,28 @@ Call the following method to cancel single notification
 ```dart
 EasyServicesManager.instance.cancelNotification();
 ```
+
+### 7: How to show welcome screen
+```dart
+@override
+  Widget build(BuildContext context) {
+  return Scaffold(
+    body: WelcomeScreen(
+      iconPath:
+      'https://crosscode.dev/wp-content/uploads/2022/11/crosscode-horizontal-white.png',
+      initializeBuilder: initializeBuilder,
+      nextScreenRouteName: TabScreen.routeName,
+    ),
+  );
+}
+
+Future<void> initializeBuilder() {
+  return EasyServicesManager.instance.initialize(
+    ...
+  );
+}
+```
+
 ## Authors
 ##### Noor Ali Butt
 [![GitHub Follow](https://img.shields.io/badge/Connect--blue.svg?logo=Github&longCache=true&style=social&label=Follow)](https://github.com/nooralibutt) [![LinkedIn Link](https://img.shields.io/badge/Connect--blue.svg?logo=linkedin&longCache=true&style=social&label=Connect

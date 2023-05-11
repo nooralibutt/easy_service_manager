@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,14 +105,16 @@ class EasyRatingManager {
 
   static Future<bool?> showRatingDialog(
       BuildContext context, String? appStoreId) {
+    final storeName = Platform.isIOS ? 'App' : 'Play';
+
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title:
-              Text('App Review', style: Theme.of(context).textTheme.titleLarge),
+          title: Text('Enjoying the app?',
+              style: Theme.of(context).textTheme.titleLarge),
           content: Text(
-              'If you like our app, would you like to rate us on play store?',
+              'If you like our app, please take a moment to rate it on $storeName Store?',
               style: Theme.of(context).textTheme.bodyLarge),
           actions: <Widget>[
             TextButton(
@@ -138,9 +142,9 @@ class EasyRatingManager {
     );
   }
 
-  static Future<bool> tryShowingNativeInAppReview() async {
+  static Future<bool> tryShowingNativeInAppReview(bool forceShow) async {
     // if launches are 3 then show in app review
-    if (getAppLaunches() % 3 == 0) {
+    if (getAppLaunches() % 3 == 0 || forceShow) {
       final InAppReview inAppReview = InAppReview.instance;
 
       if (await inAppReview.isAvailable()) {

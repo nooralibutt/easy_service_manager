@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:easy_service_manager/src/models/app_info.dart';
 import 'package:easy_service_manager/src/services/privacy_policy_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
@@ -9,7 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MoreSettings extends StatefulWidget {
   final AppInfo appInfo;
-  const MoreSettings({super.key, required this.appInfo});
+  final String? title;
+  const MoreSettings({super.key, required this.appInfo, this.title});
 
   @override
   State<MoreSettings> createState() => _MoreSettingsState();
@@ -28,11 +31,13 @@ class _MoreSettingsState extends State<MoreSettings> {
         children: [
           ListTile(
             leading: getCloseButton(),
-            title: Text(
-              ' Settings',
-              style: theme.textTheme.headlineLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
+            title: widget.title == null
+                ? null
+                : Text(
+                    widget.title!,
+                    style: theme.textTheme.headlineLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
           ),
           const SizedBox(height: 10),
           if (widget.appInfo.privacyPolicy?.isNotEmpty ?? false)
@@ -55,9 +60,26 @@ class _MoreSettingsState extends State<MoreSettings> {
             leading: const Icon(Icons.info_outline),
             onTap: _showAboutDialog,
           ),
+          ListTile(
+            title: Text(
+                'Version ${kDebugMode ? 'd' : 'r'}${widget.appInfo.versionAndBuild}',
+                style: style),
+            leading: const Icon(Icons.new_releases),
+            onTap: _showDebugger,
+          ),
         ],
       ),
     );
+  }
+
+  int _showDebuggerCount = 0;
+  void _showDebugger() {
+    if (_showDebuggerCount == 3) {
+      _showDebuggerCount = 0;
+      MobileAds.instance.openAdInspector((error) {});
+    } else {
+      _showDebuggerCount++;
+    }
   }
 
   void _showAboutDialog() {

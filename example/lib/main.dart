@@ -4,26 +4,6 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await EasyServicesManager.instance.initialize(
-    adIdManager: const TestAdIdManager(),
-    aboutAppDescription: 'You can add the app description here.',
-    supportEmail: 'mail@example.com',
-    itunesMoreAppLink: 'tiktok-ltd/id1322881000',
-    androidDeveloperName: 'TikTok+Pte.+Ltd',
-    appStoreID: '835599320',
-    privacyPolicy: 'This is the privacy policy here.',
-    remoteConfigEndpointUrl: 'nooralibutt.github.io/sample.json',
-    wallpapersKey: _wallpapersKeyMapper,
-    useNotifications: true,
-    isAutoScheduleNotification: true,
-    notificationsList: const [
-      'This is the 1st notification',
-      'This is the 2nd notification',
-      'This is the 3rd notification',
-      'This is the 4th notification',
-    ],
-  );
-
   runApp(const MyApp());
 }
 
@@ -34,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData.dark(useMaterial3: true),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -53,7 +33,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: getMoreSettings(),
+      body: WelcomeWidget(
+        iconPath:
+            'https://crosscode.dev/wp-content/uploads/2022/11/crosscode-horizontal-white.png',
+        initializeBuilder: initializeBuilder,
+        onDone: () => onPressedStandalone(false),
+      ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -84,6 +69,28 @@ class _MyHomePageState extends State<MyHomePage> {
       MaterialPageRoute(
           fullscreenDialog: fullscreenDialog,
           builder: (_) => Scaffold(body: getMoreSettings())),
+    );
+  }
+
+  Future<void> initializeBuilder() {
+    return EasyServicesManager.instance.initialize(
+      adIdManager: const TestAdIdManager(),
+      aboutAppDescription: 'You can add the app description here.',
+      supportEmail: 'mail@example.com',
+      itunesMoreAppLink: 'tiktok-ltd/id1322881000',
+      androidDeveloperName: 'TikTok+Pte.+Ltd',
+      appStoreID: '835599320',
+      privacyPolicy: 'This is the privacy policy here.',
+      remoteConfigEndpointUrl: 'nooralibutt.github.io/sample.json',
+      wallpapersKey: _wallpapersKeyMapper,
+      useNotifications: true,
+      isAutoScheduleNotification: true,
+      notificationsList: const [
+        'This is the 1st notification',
+        'This is the 2nd notification',
+        'This is the 3rd notification',
+        'This is the 4th notification',
+      ],
     );
   }
 }
