@@ -15,6 +15,7 @@ class AdManager {
 
   Future<void> initialize(
       {required IAdIdManager adIdManager,
+      bool isShowAppOpenOnAppStateChange = false,
       List<String>? adKeywords,
       RemoteConfig? adSetting}) async {
     this.adSetting = adSetting;
@@ -55,6 +56,7 @@ class AdManager {
       adIdManager,
       admobConfiguration: requestConf,
       adMobAdRequest: targetingInfo,
+      isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
       showAdBadge: isAndroidApproving,
       fbiOSAdvertiserTrackingEnabled: isIosApproving,
       isAgeRestrictedUserForApplovin: isIosApproving || isAndroidApproving,

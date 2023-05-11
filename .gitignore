@@ -75,3 +75,5 @@ build/
 !**/ios/**/default.perspectivev3
 /.idea/libraries/
 /.idea/modules.xml/
+/example/pubspec.lock
+/pubspec.lock

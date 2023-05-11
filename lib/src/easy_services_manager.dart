@@ -58,6 +58,9 @@ class EasyServicesManager {
     /// It will be your easy ads AdIdManager
     final IAdIdManager? adIdManager,
 
+    /// if [true] then app open ad will be shown on app state change
+    bool isShowAppOpenOnAppStateChange = false,
+
     /// This is the app remote configuration settings endpoint url
     final String? remoteConfigEndpointUrl,
 
@@ -86,9 +89,11 @@ class EasyServicesManager {
 
     if (adIdManager != null) {
       await _adManager.initialize(
-          adIdManager: adIdManager,
-          adKeywords: adKeywords,
-          adSetting: _remoteConfig);
+        adIdManager: adIdManager,
+        adKeywords: adKeywords,
+        adSetting: _remoteConfig,
+        isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
+      );
     }
 
     _appInfo = AppInfo(

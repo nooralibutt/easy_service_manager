@@ -1,3 +1,7 @@
+## 1.2.6
+* Update Dependencies
+* Add `isShowAppOpenOnAppStateChange` check on initialization
+
 ## 1.2.5
 * Plugin updates
 * Adds android approving check for ads
