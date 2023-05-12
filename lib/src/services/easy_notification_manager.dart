@@ -102,13 +102,16 @@ class EasyNotificationManager {
         model.body,
         tz.TZDateTime.now(tz.local).add(duration),
         NotificationDetails(
-            android: AndroidNotificationDetails(
-                appInfo?.packageName ?? '', appInfo?.appName ?? '',
-                channelDescription: 'Our notifications will be displayed here',
-                importance: Importance.max,
-                priority: Priority.high,
-                showWhen: false)),
-        androidAllowWhileIdle: true,
+          android: AndroidNotificationDetails(
+            appInfo?.packageName ?? '',
+            appInfo?.appName ?? '',
+            channelDescription: 'Our notifications will be displayed here',
+            importance: Importance.max,
+            priority: Priority.high,
+            showWhen: false,
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
   }
