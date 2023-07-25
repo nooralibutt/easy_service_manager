@@ -1,3 +1,6 @@
+## 1.2.7
+* Update Dependencies
+
 ## 1.2.6
 * Update Dependencies
 * Add `isShowAppOpenOnAppStateChange` check on initialization
