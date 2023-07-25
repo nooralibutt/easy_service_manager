@@ -77,3 +77,4 @@ build/
 /.idea/modules.xml/
 /example/pubspec.lock
 /pubspec.lock
+example/ios/Podfile.lock
