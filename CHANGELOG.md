@@ -1,3 +1,6 @@
+## 1.3.0
+* Updates dependencies
+
 ## 1.2.8
 * Updates dependencies
 * Update `easy_ads_flutter: ^2.3.6`

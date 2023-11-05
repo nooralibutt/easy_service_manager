@@ -77,33 +77,67 @@ class AdManager {
     return EasySmartBannerAd(priorityAdNetworks: list, adSize: adSize);
   }
 
-  bool _showPriorityInterstitial() {
+  bool _showPriorityInterstitial({
+    int loaderDuration = 0,
+    BuildContext? context,
+  }) {
     final list = adPriorityList;
     if (list == null || list.isEmpty) {
-      return EasyAds.instance.showAd(AdUnitType.interstitial);
+      return EasyAds.instance.showAd(
+        AdUnitType.interstitial,
+        loaderDuration: loaderDuration,
+        context: context,
+      );
     }
 
     for (int i = 0; i < list.length; i++) {
       if (list[i] == AdPriority.facebook) {
-        if (EasyAds.instance.showAd(AdUnitType.interstitial,
-            adNetwork: AdNetwork.facebook)) return true;
+        if (EasyAds.instance.showAd(
+          AdUnitType.interstitial,
+          adNetwork: AdNetwork.facebook,
+          loaderDuration: loaderDuration,
+          context: context,
+        )) return true;
       } else if (list[i] == AdPriority.unity) {
-        if (EasyAds.instance.showAd(AdUnitType.interstitial,
-            adNetwork: AdNetwork.unity)) return true;
+        if (EasyAds.instance.showAd(
+          AdUnitType.interstitial,
+          adNetwork: AdNetwork.unity,
+          loaderDuration: loaderDuration,
+          context: context,
+        )) return true;
       } else if (list[i] == AdPriority.appLovin) {
-        if (EasyAds.instance.showAd(AdUnitType.interstitial,
-            adNetwork: AdNetwork.appLovin)) return true;
+        if (EasyAds.instance.showAd(
+          AdUnitType.interstitial,
+          adNetwork: AdNetwork.appLovin,
+          loaderDuration: loaderDuration,
+          context: context,
+        )) return true;
       } else if (list[i] == AdPriority.admob) {
-        if (EasyAds.instance.showAd(AdUnitType.interstitial,
-            adNetwork: AdNetwork.admob)) return true;
+        if (EasyAds.instance.showAd(
+          AdUnitType.interstitial,
+          adNetwork: AdNetwork.admob,
+          loaderDuration: loaderDuration,
+          context: context,
+        )) return true;
       }
     }
 
-    return EasyAds.instance.showAd(AdUnitType.interstitial);
+    return EasyAds.instance.showAd(
+      AdUnitType.interstitial,
+      loaderDuration: loaderDuration,
+      context: context,
+    );
   }
 
-  bool showInterstitial({Function? onInterstitialClosed}) {
-    if (_showPriorityInterstitial()) {
+  bool showInterstitial({
+    Function? onInterstitialClosed,
+    int loaderDuration = 0,
+    BuildContext? context,
+  }) {
+    if (_showPriorityInterstitial(
+      loaderDuration: loaderDuration,
+      context: context,
+    )) {
       if (onInterstitialClosed != null) {
         _streamSubscription?.cancel();
         _streamSubscription = EasyAds.instance.onEvent.listen((event) {
@@ -122,11 +156,19 @@ class AdManager {
   }
 
   int _count = 0;
-  void showCountedInterstitial({Function? onInterstitialClosed}) {
+  void showCountedInterstitial({
+    Function? onInterstitialClosed,
+    int loaderDuration = 0,
+    BuildContext? context,
+  }) {
     _count++;
     final serverCounter = adSetting?.interstitialCounter ?? 2;
     if (_count >= serverCounter &&
-        showInterstitial(onInterstitialClosed: onInterstitialClosed)) {
+        showInterstitial(
+          onInterstitialClosed: onInterstitialClosed,
+          loaderDuration: loaderDuration,
+          context: context,
+        )) {
       _count = 0;
     }
   }

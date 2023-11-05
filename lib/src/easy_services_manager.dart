@@ -149,12 +149,28 @@ class EasyServicesManager {
       _adManager.showPriorityBanner(adSize: adSize);
 
   /// This will show the Interstitial ad
-  bool showInterstitialAd({Function? onInterstitialClosed}) =>
-      _adManager.showInterstitial(onInterstitialClosed: onInterstitialClosed);
+  bool showInterstitialAd({
+    Function? onInterstitialClosed,
+    int loaderDuration = 0,
+    BuildContext? context,
+  }) =>
+      _adManager.showInterstitial(
+        onInterstitialClosed: onInterstitialClosed,
+        loaderDuration: loaderDuration,
+        context: context,
+      );
 
   /// This will show the Interstitial ad with count from the remote config settings
-  void showCountedInterstitialAd({Function? onInterstitialClosed}) => _adManager
-      .showCountedInterstitial(onInterstitialClosed: onInterstitialClosed);
+  void showCountedInterstitialAd({
+    Function? onInterstitialClosed,
+    int loaderDuration = 0,
+    BuildContext? context,
+  }) =>
+      _adManager.showCountedInterstitial(
+        onInterstitialClosed: onInterstitialClosed,
+        loaderDuration: loaderDuration,
+        context: context,
+      );
 
   /// This will show the Rewarded ad
   void showRewardedAd({Function? onRewardedClosed}) =>
