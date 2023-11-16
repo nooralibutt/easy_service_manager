@@ -1,3 +1,6 @@
+## 1.3.1
+* Export `AppInfo` model
+
 ## 1.3.0
 * Updates dependencies
 

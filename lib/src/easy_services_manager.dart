@@ -118,6 +118,9 @@ class EasyServicesManager {
     }
   }
 
+  ///  This will return app info which user have added on initialization
+  AppInfo get appInfo => _appInfo;
+
   ///  This will return more setting screen
   Widget moreScreen({String? title = 'Settings'}) =>
       MoreSettings(title: title, appInfo: _appInfo);
