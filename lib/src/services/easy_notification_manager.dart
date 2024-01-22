@@ -72,7 +72,8 @@ class EasyNotificationManager {
               .resolvePlatformSpecificImplementation<
                   AndroidFlutterLocalNotificationsPlugin>();
 
-      final bool? granted = await androidImplementation?.requestPermission();
+      final bool? granted =
+          await androidImplementation?.requestNotificationsPermission();
       _isAndroidNotificationsEnabled = granted ?? false;
     }
 
