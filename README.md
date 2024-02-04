@@ -116,6 +116,7 @@ EasyServicesManager.instance.showRewardedAd();
 ### 6: How to schedule local notifications
 #### - For Android
 - For implement local notifications, you have to add app icon with the  name `app_icon.png` inside the android drawable `android/app/src/main/res/drawable`
+- Add permissions in the `AndroidManifest.xml` between the `<manifest>` tag
 
 You have to pass the notification list in the initializer of `EasyServicesManager`. If you do not provide the notifications list then local notifications will not be initialize.
 ### - Initialization
@@ -129,6 +130,45 @@ notificationsList: const [
 ],
 );
 ```
+
+The plugin also requires that the `compileSdkVersion` in your application's Gradle file is set to 33:
+
+```gradle
+android {
+    compileSdkVersion 33
+    ...
+}
+```
+
+### AndroidManifest.xml setup
+
+Previously the plugin would specify all the permissions required all of the features that the plugin support in its own `AndroidManifest.xml` file so that developers wouldn't need to do this in their own app's `AndroidManifest.xml` file. Since version 16 onwards, the plugin will now only specify the bare minimum and these [`POST_NOTIFICATIONS`] (https://developer.android.com/reference/android/Manifest.permission#POST_NOTIFICATIONS) and [`VIBRATE`](https://developer.android.com/reference/android/Manifest.permission#VIBRATE) permissions.
+
+For apps that need the following functionality please complete the following in your app's `AndroidManifest.xml`
+
+* To schedule notifications the following changes are needed
+    * Specify the appropriate permissions between the `<manifest>` tags.
+        * `<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>`: this is required so the plugin can known when the device is rebooted. This is required so that the plugin can reschedule notifications upon a reboot
+        * If the app requires scheduling notifications with exact timings (aka exact alarms), there are two options since Android 14 brought about behavioural changes (see [here](https://developer.android.com/about/versions/14/changes/schedule-exact-alarms) for more details)
+            * specify `<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />` and call the `requestExactAlarmsPermission()` exposed by the `AndroidFlutterNotificationsPlugin` class so that the user can grant the permission via the app or
+            * specify `<uses-permission android:name="android.permission.USE_EXACT_ALARM" />`. Users will not be prompted to grant permission, however as per the official Android documentation on the `USE_EXACT_ALARM` permission (refer to [here](https://developer.android.com/about/versions/14/changes/schedule-exact-alarms#calendar-alarm-clock) and [here](https://developer.android.com/reference/android/Manifest.permission#USE_EXACT_ALARM)), this requires the app to target Android 13 (API level 33) or higher and could be subject to approval and auditing by the app store(s) used to publish theapp
+    * Specify the following between the `<application>` tags so that the plugin can actually show the scheduled notification(s)
+    ```xml
+    <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+    <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+        </intent-filter>
+    </receiver>
+    ```
+* To use full-screen intent notifications, specify the `<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />` permission between the `<manifest>` tags.
+* To use notification actions, specify `<receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver" />` between the `<application>` tags so that the plugin can process the actions and trigger the appropriate callback(s)
+
+Developers can refer to the example app's `AndroidManifest.xml` to help see what the end result may look like. Do note that the example app covers all the plugin's supported functionality so will request more permissions than your own app may need
+
 ### - Usage
 ##### - To Schedule All Notifications List
 Call the following method to schedule all notifications list
