@@ -1,3 +1,14 @@
+## 1.3.3
+* Updated dependencies
+* `url_launcher: ^6.2.6`
+* `in_app_review: ^2.0.9`
+* `shared_preferences: ^2.2.3`
+* `easy_ads_flutter: ^2.4.4`
+* `app_tracking_transparency: ^2.0.5`
+* `unity_ads_plugin: ^0.3.16`
+* `flutter_local_notifications: ^17.1.2`
+* `timezone: ^0.9.3`
+
 ## 1.3.2
 * Update dependencies
 
