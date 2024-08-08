@@ -13,11 +13,13 @@ class AdManager {
   StreamSubscription? _streamSubscription;
   RemoteConfig? adSetting;
 
-  Future<void> initialize(
-      {required IAdIdManager adIdManager,
-      bool isShowAppOpenOnAppStateChange = false,
-      List<String>? adKeywords,
-      RemoteConfig? adSetting}) async {
+  Future<void> initialize({
+    required IAdIdManager adIdManager,
+    bool isShowAppOpenOnAppStateChange = false,
+    List<String>? adKeywords,
+    RemoteConfig? adSetting,
+    Map<int, List<int>>? segments,
+  }) async {
     this.adSetting = adSetting;
     final isIosApproving =
         Platform.isIOS && (adSetting?.isIosApproving ?? true);
@@ -60,6 +62,7 @@ class AdManager {
       showAdBadge: isAndroidApproving,
       fbiOSAdvertiserTrackingEnabled: isIosApproving,
       isAgeRestrictedUserForApplovin: isIosApproving || isAndroidApproving,
+      segments: segments,
     );
 
     adPriorityList = adSetting?.adPriorityList ?? [];
@@ -156,6 +159,7 @@ class AdManager {
   }
 
   int _count = 0;
+
   void showCountedInterstitial({
     Function? onInterstitialClosed,
     int loaderDuration = 0,

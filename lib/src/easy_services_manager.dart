@@ -16,6 +16,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 class EasyServicesManager {
   EasyServicesManager._easyServicesManager();
+
   static final EasyServicesManager instance =
       EasyServicesManager._easyServicesManager();
 
@@ -78,6 +79,11 @@ class EasyServicesManager {
 
     ///  if `isAutoScheduleNotification = true`, manager schedule provided notifications list here automatically
     final bool isAutoScheduleNotification = true,
+
+    /// to add segments in the applovin max initialization.
+    ///
+    /// For detail, see [here](https://developers.applovin.com/en/flutter/overview/data-and-keyword-passing/#segment-targeting)
+    final Map<int, List<int>>? segments,
   }) async {
     final packageInfo = await PackageInfo.fromPlatform();
 
@@ -93,6 +99,7 @@ class EasyServicesManager {
         adKeywords: adKeywords,
         adSetting: _remoteConfig,
         isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
+        segments: segments,
       );
     }
 
