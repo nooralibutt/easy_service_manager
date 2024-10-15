@@ -13,6 +13,9 @@ class WelcomeWidget extends StatefulWidget {
   final String? nextScreenRouteName;
   final VoidCallback? onDone;
   final bool showAppOpenAd;
+
+  /// If auto done is false, after loading a start button will be displayed, otherwise it will automatically call `onDone` and move to next route
+  final bool autoDone;
   final String? iconPath;
 
   /// After initializing or showing app open ad, on done or move to next screen will be called after this delay in SECONDS
@@ -23,6 +26,7 @@ class WelcomeWidget extends StatefulWidget {
     this.initializeBuilder,
     this.showAppOpenAd = true,
     this.delayInDone = 2,
+    this.autoDone = true,
     this.nextScreenRouteName,
     this.onDone,
     super.key,
@@ -43,6 +47,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
     Colors.purple,
   ];
   StreamSubscription<AdEvent>? _streamSubscription;
+  final _loadingCompleter = Completer();
 
   @override
   void initState() {
@@ -72,16 +77,35 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (widget.iconPath != null) buildLogo(),
-            Container(
-              width: 200,
-              height: 200,
-              padding: const EdgeInsets.all(60.0),
-              alignment: Alignment.center,
-              child: LoadingIndicator(
-                indicatorType:
-                    Indicator.values[Random().nextInt(Indicator.values.length)],
-                colors: _kDefaultRainbowColors,
-              ),
+            FutureBuilder(
+              future: _loadingCompleter.future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    widget.autoDone == false) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 40),
+                      ),
+                      onPressed: _onDone,
+                      child: Text('Start'),
+                    ),
+                  );
+                }
+
+                return Container(
+                  width: 200,
+                  height: 200,
+                  padding: const EdgeInsets.all(60.0),
+                  alignment: Alignment.center,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator
+                        .values[Random().nextInt(Indicator.values.length)],
+                    colors: _kDefaultRainbowColors,
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -159,15 +183,19 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
     if (widget.initializeBuilder != null) {
       await widget.initializeBuilder?.call();
     }
-    final appOpenAdNotAvailable =
+    final appOpenAdNotSupported =
         EasyAds.instance.adIdManager.admobAdIds?.appOpenId?.isEmpty ?? true;
-    if (widget.showAppOpenAd == false || appOpenAdNotAvailable) {
+    if (widget.showAppOpenAd == false || appOpenAdNotSupported) {
       _scheduleDone();
     }
   }
 
   void _scheduleDone() {
-    Future.delayed(Duration(seconds: widget.delayInDone), _onDone);
+    if (widget.autoDone) {
+      Future.delayed(Duration(seconds: widget.delayInDone), _onDone);
+    } else {
+      _loadingCompleter.complete();
+    }
   }
 
   bool _isAlreadyDone = false;

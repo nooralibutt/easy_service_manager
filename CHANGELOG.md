@@ -1,3 +1,8 @@
+## 1.4.1
+
+* Updated all the dependencies
+* Added `autoDone` flag, If auto done is false, after loading a start button will be displayed, otherwise it will automatically call `onDone` and move to next route
+
 ## 1.4.0
 
 * Updated dependencies
