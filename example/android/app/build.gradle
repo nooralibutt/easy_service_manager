@@ -77,7 +77,4 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation  'com.google.ads.mediation:adcolony:4.8.0.1'
-    implementation  'com.google.ads.mediation:chartboost:9.2.1.0'
-    implementation  'com.google.ads.mediation:vungle:6.12.1.0'
 }
