@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:easy_service_manager/src/services/remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
@@ -26,6 +27,7 @@ class AdManager {
     final isAndroidApproving =
         Platform.isAndroid && (adSetting?.isAndroidApproving ?? true);
 
+    bool contextualAds = true;
     if (Platform.isIOS) {
       TrackingStatus status =
           await AppTrackingTransparency.trackingAuthorizationStatus;
@@ -33,27 +35,30 @@ class AdManager {
         status = await AppTrackingTransparency.requestTrackingAuthorization();
       }
 
-      await UnityAds.setPrivacyConsent(
-          PrivacyConsentType.gdpr, status == TrackingStatus.authorized);
-      await UnityAds.setPrivacyConsent(
-          PrivacyConsentType.ccpa, status == TrackingStatus.authorized);
-      await UnityAds.setPrivacyConsent(
-          PrivacyConsentType.pipl, status == TrackingStatus.authorized);
-
-      await Future.delayed(const Duration(seconds: 1));
+      contextualAds = status != TrackingStatus.authorized;
     }
+
+    bool authorized = await ConsentManager.gatherGdprConsent(
+        debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null);
+    await UnityAds.setPrivacyConsent(PrivacyConsentType.gdpr, authorized);
+
+    bool privacyAuthorized = await ConsentManager.gatherPrivacyConsent();
+    await UnityAds.setPrivacyConsent(
+        PrivacyConsentType.ccpa, privacyAuthorized);
+    await UnityAds.setPrivacyConsent(
+        PrivacyConsentType.pipl, privacyAuthorized);
 
     await UnityAds.setPrivacyConsent(
         PrivacyConsentType.ageGate, isIosApproving || isAndroidApproving);
 
     final targetingInfo = AdRequest(
-        nonPersonalizedAds: !isIosApproving || !isAndroidApproving,
+        nonPersonalizedAds: Platform.isIOS ? contextualAds : null,
         keywords: adKeywords);
 
     final requestConf = RequestConfiguration(
         maxAdContentRating: isIosApproving || isAndroidApproving
             ? MaxAdContentRating.pg
-            : MaxAdContentRating.t);
+            : null);
     await EasyAds.instance.initialize(
       adIdManager,
       admobConfiguration: requestConf,

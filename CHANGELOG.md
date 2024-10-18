@@ -1,3 +1,9 @@
+## 1.5.0
+
+* Fixed GDPR issues
+* Fixed Tracking transparency issues
+* Updated dependencies
+
 ## 1.4.1
 
 * Updated all the dependencies
