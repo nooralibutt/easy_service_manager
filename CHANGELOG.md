@@ -1,3 +1,8 @@
+## 1.5.1
+
+* Fixed double show of UMP Dialog
+* Updated dependencies
+
 ## 1.5.0
 
 * Fixed GDPR issues
