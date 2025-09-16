@@ -113,8 +113,9 @@ class _MoreSettingsState extends State<MoreSettings> {
       link =
           'iOS: items-apps://itunes.apple.com/app/apple-store/id${widget.appInfo.appStoreID}?mt=8';
     }
-    Share.share('Hey there check out the best ${widget.appInfo.appName}: $link',
-        subject: widget.appInfo.appName);
+    SharePlus.instance.share(ShareParams(
+        text: 'Hey there check out the best ${widget.appInfo.appName}: $link',
+        subject: widget.appInfo.appName));
   }
 
   void _rateUs() =>

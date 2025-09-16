@@ -98,23 +98,22 @@ class EasyNotificationManager {
   Future<void> scheduleNotification(
       NotificationModel model, Duration duration) async {
     await _flutterLocalNotificationsPlugin.zonedSchedule(
-        model.id,
-        model.title,
-        model.body,
-        tz.TZDateTime.now(tz.local).add(duration),
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            appInfo?.packageName ?? '',
-            appInfo?.appName ?? '',
-            channelDescription: 'Our notifications will be displayed here',
-            importance: Importance.max,
-            priority: Priority.high,
-            showWhen: false,
-          ),
+      model.id,
+      model.title,
+      model.body,
+      tz.TZDateTime.now(tz.local).add(duration),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          appInfo?.packageName ?? '',
+          appInfo?.appName ?? '',
+          channelDescription: 'Our notifications will be displayed here',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: false,
         ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+      ),
+      androidScheduleMode: AndroidScheduleMode.inexact,
+    );
   }
 
   Future<void> _cancelAllNotifications() =>

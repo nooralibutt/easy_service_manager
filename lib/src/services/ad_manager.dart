@@ -39,7 +39,8 @@ class AdManager {
     }
 
     bool authorized = await ConsentManager.gatherGdprConsent(
-        debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null);
+      debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null,
+    );
     await UnityAds.setPrivacyConsent(PrivacyConsentType.gdpr, authorized);
 
     // bool privacyAuthorized = await ConsentManager.gatherPrivacyConsent();
@@ -47,16 +48,20 @@ class AdManager {
     await UnityAds.setPrivacyConsent(PrivacyConsentType.pipl, true);
 
     await UnityAds.setPrivacyConsent(
-        PrivacyConsentType.ageGate, isIosApproving || isAndroidApproving);
+      PrivacyConsentType.ageGate,
+      isIosApproving || isAndroidApproving,
+    );
 
     final targetingInfo = AdRequest(
-        nonPersonalizedAds: Platform.isIOS ? contextualAds : null,
-        keywords: adKeywords);
+      nonPersonalizedAds: Platform.isIOS ? contextualAds : null,
+      keywords: adKeywords,
+    );
 
     final requestConf = RequestConfiguration(
-        maxAdContentRating: isIosApproving || isAndroidApproving
-            ? MaxAdContentRating.pg
-            : null);
+      maxAdContentRating: isIosApproving || isAndroidApproving
+          ? MaxAdContentRating.pg
+          : null,
+    );
     await EasyAds.instance.initialize(
       adIdManager,
       admobConfiguration: requestConf,
@@ -103,28 +108,36 @@ class AdManager {
           adNetwork: AdNetwork.facebook,
           loaderDuration: loaderDuration,
           context: context,
-        )) return true;
+        )) {
+          return true;
+        }
       } else if (list[i] == AdPriority.unity) {
         if (EasyAds.instance.showAd(
           AdUnitType.interstitial,
           adNetwork: AdNetwork.unity,
           loaderDuration: loaderDuration,
           context: context,
-        )) return true;
+        )) {
+          return true;
+        }
       } else if (list[i] == AdPriority.appLovin) {
         if (EasyAds.instance.showAd(
           AdUnitType.interstitial,
           adNetwork: AdNetwork.appLovin,
           loaderDuration: loaderDuration,
           context: context,
-        )) return true;
+        )) {
+          return true;
+        }
       } else if (list[i] == AdPriority.admob) {
         if (EasyAds.instance.showAd(
           AdUnitType.interstitial,
           adNetwork: AdNetwork.admob,
           loaderDuration: loaderDuration,
           context: context,
-        )) return true;
+        )) {
+          return true;
+        }
       }
     }
 

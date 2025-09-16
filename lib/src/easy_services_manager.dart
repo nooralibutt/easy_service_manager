@@ -121,7 +121,9 @@ class EasyServicesManager {
       _notificationsList = notificationsList;
       await _notificationManager?.init(appInfo: _appInfo);
       if ((_notificationsList?.isNotEmpty ?? false) &&
-          isAutoScheduleNotification) scheduleAllNotifications();
+          isAutoScheduleNotification) {
+        scheduleAllNotifications();
+      }
     }
   }
 

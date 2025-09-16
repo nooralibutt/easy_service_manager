@@ -7,9 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RateFloatingButton extends StatefulWidget {
   final String? appStoreId;
   const RateFloatingButton({
-    Key? key,
+    super.key,
     this.appStoreId,
-  }) : super(key: key);
+  });
 
   @override
   State<RateFloatingButton> createState() => _RateFloatingButtonState();

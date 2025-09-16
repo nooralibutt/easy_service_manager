@@ -1,10 +1,9 @@
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
-import 'package:flutter/foundation.dart';
 
 enum AdPriority { admob, appLovin, unity, facebook, any }
 
 extension AdPriorityExtension on AdPriority {
-  String get value => describeEnum(this);
+  String get value => name;
 }
 
 const adPriorityStringToEnumMap = {
