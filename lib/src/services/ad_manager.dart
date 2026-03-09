@@ -38,19 +38,21 @@ class AdManager {
       contextualAds = status != TrackingStatus.authorized;
     }
 
-    bool authorized = await ConsentManager.gatherGdprConsent(
-      debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null,
-    );
-    await UnityAds.setPrivacyConsent(PrivacyConsentType.gdpr, authorized);
+    if (Platform.isAndroid || contextualAds) {
+      bool authorized = await ConsentManager.gatherGdprConsent(
+        debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null,
+      );
+      await UnityAds.setPrivacyConsent(PrivacyConsentType.gdpr, authorized);
 
-    // bool privacyAuthorized = await ConsentManager.gatherPrivacyConsent();
-    await UnityAds.setPrivacyConsent(PrivacyConsentType.ccpa, true);
-    await UnityAds.setPrivacyConsent(PrivacyConsentType.pipl, true);
+      // bool privacyAuthorized = await ConsentManager.gatherPrivacyConsent();
+      await UnityAds.setPrivacyConsent(PrivacyConsentType.ccpa, true);
+      await UnityAds.setPrivacyConsent(PrivacyConsentType.pipl, true);
 
-    await UnityAds.setPrivacyConsent(
-      PrivacyConsentType.ageGate,
-      isIosApproving || isAndroidApproving,
-    );
+      await UnityAds.setPrivacyConsent(
+        PrivacyConsentType.ageGate,
+        isIosApproving || isAndroidApproving,
+      );
+    }
 
     final targetingInfo = AdRequest(
       nonPersonalizedAds: Platform.isIOS ? contextualAds : null,

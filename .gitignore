@@ -79,3 +79,15 @@ build/
 /pubspec.lock
 example/ios/Podfile.lock
 /example/android/.kotlin
+example/macos/Flutter/GeneratedPluginRegistrant.swift
+example/macos/Flutter/ephemeral/flutter_export_environment.sh
+example/macos/Flutter/ephemeral/Flutter-Generated.xcconfig
+example/linux/flutter/generated_plugins.cmake
+example/linux/flutter/generated_plugin_registrant.h
+example/linux/flutter/generated_plugin_registrant.cc
+example/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux
+example/linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux
+example/linux/flutter/ephemeral/.plugin_symlinks/share_plus
+example/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux
+example/linux/flutter/ephemeral/.plugin_symlinks/package_info_plus
+example/linux/flutter/ephemeral/.plugin_symlinks/flutter_local_notifications_linux
