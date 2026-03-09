@@ -20,14 +20,16 @@ class EasyNotificationManager {
     /// done later
     const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+        );
     const settings = InitializationSettings(
-        android: androidSettings, iOS: initializationSettingsDarwin);
+      android: androidSettings,
+      iOS: initializationSettingsDarwin,
+    );
 
-    _flutterLocalNotificationsPlugin.initialize(settings);
+    _flutterLocalNotificationsPlugin.initialize(settings: settings);
 
     tz.initializeTimeZones();
 
@@ -37,9 +39,11 @@ class EasyNotificationManager {
 
   Future<bool> _isAndroidPermissionGranted() async {
     if (Platform.isAndroid) {
-      final bool granted = await _flutterLocalNotificationsPlugin
+      final bool granted =
+          await _flutterLocalNotificationsPlugin
               .resolvePlatformSpecificImplementation<
-                  AndroidFlutterLocalNotificationsPlugin>()
+                AndroidFlutterLocalNotificationsPlugin
+              >()
               ?.areNotificationsEnabled() ??
           false;
 
@@ -52,28 +56,23 @@ class EasyNotificationManager {
     if (Platform.isIOS || Platform.isMacOS) {
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
+            IOSFlutterLocalNotificationsPlugin
+          >()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              MacOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
+            MacOSFlutterLocalNotificationsPlugin
+          >()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
     } else if (Platform.isAndroid && !_isAndroidNotificationsEnabled) {
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
           _flutterLocalNotificationsPlugin
               .resolvePlatformSpecificImplementation<
-                  AndroidFlutterLocalNotificationsPlugin>();
+                AndroidFlutterLocalNotificationsPlugin
+              >();
 
-      final bool? granted =
-          await androidImplementation?.requestNotificationsPermission();
+      final bool? granted = await androidImplementation
+          ?.requestNotificationsPermission();
       _isAndroidNotificationsEnabled = granted ?? false;
     }
 
@@ -87,22 +86,26 @@ class EasyNotificationManager {
 
     for (int i = 0; i < 32; i++) {
       await scheduleNotification(
-          NotificationModel(
-              id: i,
-              title: appInfo?.appName ?? '',
-              body: notificationsList[i % notificationsList.length]),
-          Duration(days: i + 1));
+        NotificationModel(
+          id: i,
+          title: appInfo?.appName ?? '',
+          body: notificationsList[i % notificationsList.length],
+        ),
+        Duration(days: i + 1),
+      );
     }
   }
 
   Future<void> scheduleNotification(
-      NotificationModel model, Duration duration) async {
+    NotificationModel model,
+    Duration duration,
+  ) async {
     await _flutterLocalNotificationsPlugin.zonedSchedule(
-      model.id,
-      model.title,
-      model.body,
-      tz.TZDateTime.now(tz.local).add(duration),
-      NotificationDetails(
+      id: model.id,
+      title: model.title,
+      body: model.body,
+      scheduledDate: tz.TZDateTime.now(tz.local).add(duration),
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           appInfo?.packageName ?? '',
           appInfo?.appName ?? '',
@@ -120,5 +123,5 @@ class EasyNotificationManager {
       _flutterLocalNotificationsPlugin.cancelAll();
 
   Future<void> cancelNotification(int id, {String? tag}) =>
-      _flutterLocalNotificationsPlugin.cancel(id, tag: tag);
+      _flutterLocalNotificationsPlugin.cancel(id: id, tag: tag);
 }
