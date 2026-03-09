@@ -1,4 +1,5 @@
 ## 26.0.0
+* Updated dependencies
 
 ## 1.6.0
 
