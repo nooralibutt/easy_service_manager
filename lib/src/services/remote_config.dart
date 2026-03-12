@@ -1,6 +1,6 @@
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 
-enum AdPriority { admob, appLovin, unity, facebook, any }
+enum AdPriority { admob, facebook, any }
 
 extension AdPriorityExtension on AdPriority {
   String get value => name;
@@ -8,8 +8,6 @@ extension AdPriorityExtension on AdPriority {
 
 const adPriorityStringToEnumMap = {
   'admob': AdPriority.admob,
-  'appLovin': AdPriority.appLovin,
-  'unity': AdPriority.unity,
   'facebook': AdPriority.facebook,
   'any': AdPriority.any,
 };
@@ -17,13 +15,11 @@ const adPriorityStringToEnumMap = {
 const _defaultAdPriority = [
   AdPriority.admob,
   AdPriority.facebook,
-  AdPriority.unity,
-  AdPriority.appLovin,
-  AdPriority.any
+  AdPriority.any,
 ];
 
-typedef RemoteConfigKeyMapper = String Function(
-    bool isAndroidApproving, bool isIosApproving);
+typedef RemoteConfigKeyMapper =
+    String Function(bool isAndroidApproving, bool isIosApproving);
 
 class RemoteConfig {
   final List<AdPriority> adPriorityList;
@@ -49,7 +45,9 @@ class RemoteConfig {
   });
 
   factory RemoteConfig.fromMap(
-      Map<String, dynamic> map, RemoteConfigKeyMapper? wallpapersKey) {
+    Map<String, dynamic> map,
+    RemoteConfigKeyMapper? wallpapersKey,
+  ) {
     // For legacy support
     final adSettings = map["ad_settings"] ?? map;
 
@@ -77,7 +75,8 @@ class RemoteConfig {
     } else {
       return list
           .map<AdPriority>(
-              (e) => adPriorityStringToEnumMap[e.toString()] ?? AdPriority.any)
+            (e) => adPriorityStringToEnumMap[e.toString()] ?? AdPriority.any,
+          )
           .toList();
     }
   }
@@ -89,10 +88,6 @@ class RemoteConfig {
         list.add(AdNetwork.admob);
       } else if (bannerAdPriorityList[i] == AdPriority.facebook) {
         list.add(AdNetwork.facebook);
-      } else if (bannerAdPriorityList[i] == AdPriority.appLovin) {
-        list.add(AdNetwork.appLovin);
-      } else if (bannerAdPriorityList[i] == AdPriority.unity) {
-        list.add(AdNetwork.unity);
       }
     }
     return list;

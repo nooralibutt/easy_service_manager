@@ -113,24 +113,6 @@ class AdManager {
         )) {
           return true;
         }
-      } else if (list[i] == AdPriority.unity) {
-        if (EasyAds.instance.showAd(
-          AdUnitType.interstitial,
-          adNetwork: AdNetwork.unity,
-          loaderDuration: loaderDuration,
-          context: context,
-        )) {
-          return true;
-        }
-      } else if (list[i] == AdPriority.appLovin) {
-        if (EasyAds.instance.showAd(
-          AdUnitType.interstitial,
-          adNetwork: AdNetwork.appLovin,
-          loaderDuration: loaderDuration,
-          context: context,
-        )) {
-          return true;
-        }
       } else if (list[i] == AdPriority.admob) {
         if (EasyAds.instance.showAd(
           AdUnitType.interstitial,
