@@ -18,7 +18,6 @@ class AdManager {
     bool isShowAppOpenOnAppStateChange = false,
     List<String>? adKeywords,
     RemoteConfig? adSetting,
-    Map<int, List<int>>? segments,
   }) async {
     this.adSetting = adSetting;
     final isIosApproving =
@@ -60,8 +59,6 @@ class AdManager {
       isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
       showAdBadge: isAndroidApproving,
       fbiOSAdvertiserTrackingEnabled: isIosApproving,
-      isAgeRestrictedUserForApplovin: isIosApproving || isAndroidApproving,
-      segments: segments,
     );
 
     adPriorityList = adSetting?.adPriorityList ?? [];
@@ -177,4 +174,42 @@ class AdManager {
     });
     return false;
   }
+
+  Future<void> showJitAppOpen({
+    VoidCallback? onFailedToLoadOrShow,
+    VoidCallback? onAdShowed,
+    VoidCallback? onAdDismissed,
+  }) {
+    return EasyAds.instance.showJitAppOpen(
+      onFailedToLoadOrShow: onFailedToLoadOrShow,
+      onAdShowed: onAdShowed,
+      onAdDismissed: onAdDismissed,
+    );
+  }
+
+  Future<void> showJitInterstitial(
+    BuildContext context, {
+    VoidCallback? onFailedToLoadOrShow,
+    VoidCallback? onAdShowed,
+    VoidCallback? onAdDismissed,
+  }) {
+    return EasyAds.instance.showJitInterstitial(
+      context,
+      onFailedToLoadOrShow: onFailedToLoadOrShow,
+      onAdShowed: onAdShowed,
+      onAdDismissed: onAdDismissed,
+    );
+  }
+
+  Future<void> showJitRewarded(
+    BuildContext context, {
+    required void Function(BuildContext context) onEarnedReward,
+  }) {
+    return EasyAds.instance.showJitRewarded(
+      context,
+      onEarnedReward: onEarnedReward,
+    );
+  }
+
+  Widget showNativeAd() => EasyAds.instance.createNativeAd();
 }

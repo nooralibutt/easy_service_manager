@@ -99,7 +99,6 @@ class EasyServicesManager {
         adKeywords: adKeywords,
         adSetting: _remoteConfig,
         isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
-        segments: segments,
       );
     }
 
@@ -146,7 +145,9 @@ class EasyServicesManager {
   /// This will return custom rating dialog if you want to show rating dialog on your own
   Future<bool> tryShowingCustomInAppReview(BuildContext context) =>
       EasyRatingManager.tryShowingCustomInAppReview(
-          context, _appInfo.appStoreID);
+        context,
+        _appInfo.appStoreID,
+      );
 
   /// This will return native platform provided in app review dialog based on launch count
   /// if [forceShow] is true then launch count will be ignored
@@ -165,39 +166,41 @@ class EasyServicesManager {
     Function? onInterstitialClosed,
     int loaderDuration = 0,
     BuildContext? context,
-  }) =>
-      _adManager.showInterstitial(
-        onInterstitialClosed: onInterstitialClosed,
-        loaderDuration: loaderDuration,
-        context: context,
-      );
+  }) => _adManager.showInterstitial(
+    onInterstitialClosed: onInterstitialClosed,
+    loaderDuration: loaderDuration,
+    context: context,
+  );
 
   /// This will show the Interstitial ad with count from the remote config settings
   void showCountedInterstitialAd({
     Function? onInterstitialClosed,
     int loaderDuration = 0,
     BuildContext? context,
-  }) =>
-      _adManager.showCountedInterstitial(
-        onInterstitialClosed: onInterstitialClosed,
-        loaderDuration: loaderDuration,
-        context: context,
-      );
+  }) => _adManager.showCountedInterstitial(
+    onInterstitialClosed: onInterstitialClosed,
+    loaderDuration: loaderDuration,
+    context: context,
+  );
 
   /// This will show the Rewarded ad
   void showRewardedAd({Function? onRewardedClosed}) =>
       _adManager.showRewardedAd(onRewardedClosed: onRewardedClosed);
 
   Future<void> _fetch(
-      String endpointUrl, RemoteConfigKeyMapper? wallpapersKey) async {
+    String endpointUrl,
+    RemoteConfigKeyMapper? wallpapersKey,
+  ) async {
     try {
       final startIndex = endpointUrl.indexOf('/');
       final domain = endpointUrl.substring(0, startIndex);
       final endpoint = endpointUrl.substring(startIndex, endpointUrl.length);
 
       final url = Uri.https(domain, endpoint);
-      final response = await http.get(url,
-          headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'});
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'},
+      );
       if (response.statusCode == 200) {
         final str = utf8.decode(response.bodyBytes).replaceAll('\n', '');
         final decodedResponse = jsonDecode(str) as Map<String, dynamic>;
@@ -217,8 +220,9 @@ class EasyServicesManager {
 
   /// Call this to schedule single notification
   Future<void>? scheduleNotification(
-          NotificationModel model, Duration duration) =>
-      _notificationManager?.scheduleNotification(model, duration);
+    NotificationModel model,
+    Duration duration,
+  ) => _notificationManager?.scheduleNotification(model, duration);
 
   /// Call this to cancel single notification
   Future<void>? cancelNotification(int id, {String? tag}) =>
