@@ -12,13 +12,15 @@ class AdManager {
   List<AdNetwork>? bannerAdPriorityList;
   StreamSubscription? _streamSubscription;
   RemoteConfig? adSetting;
-  final bool autoLoadAds = true;
+  late final bool autoLoadAds;
   Future<void> initialize({
     required IAdIdManager adIdManager,
     bool isShowAppOpenOnAppStateChange = false,
     List<String>? adKeywords,
     RemoteConfig? adSetting,
+    bool autoLoadAds = true,
   }) async {
+    this.autoLoadAds = autoLoadAds;
     this.adSetting = adSetting;
     final isIosApproving =
         Platform.isIOS && (adSetting?.isIosApproving ?? true);
@@ -59,6 +61,7 @@ class AdManager {
       isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
       showAdBadge: isAndroidApproving,
       fbiOSAdvertiserTrackingEnabled: isIosApproving,
+      autoLoadAds: autoLoadAds,
     );
 
     adPriorityList = adSetting?.adPriorityList ?? [];

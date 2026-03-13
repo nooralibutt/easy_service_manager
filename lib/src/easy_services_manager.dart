@@ -79,6 +79,7 @@ class EasyServicesManager {
 
     ///  if `isAutoScheduleNotification = true`, manager schedule provided notifications list here automatically
     final bool isAutoScheduleNotification = true,
+    final bool autoLoadAds = true,
   }) async {
     final packageInfo = await PackageInfo.fromPlatform();
 
@@ -94,6 +95,7 @@ class EasyServicesManager {
         adKeywords: adKeywords,
         adSetting: _remoteConfig,
         isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
+        autoLoadAds: autoLoadAds,
       );
     }
 
