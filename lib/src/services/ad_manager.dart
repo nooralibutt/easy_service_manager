@@ -36,11 +36,9 @@ class AdManager {
     }
 
     if (Platform.isAndroid || contextualAds) {
-      bool authorized = await ConsentManager.gatherGdprConsent(
+      await ConsentManager.gatherGdprConsent(
         debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null,
       );
-
-      // bool privacyAuthorized = await ConsentManager.gatherPrivacyConsent();
     }
 
     final targetingInfo = AdRequest(
@@ -123,27 +121,37 @@ class AdManager {
     return false;
   }
 
-  Future<void> showJitAppOpen({Function? onClosed}) async {
-    await EasyAds.instance.showJitAppOpen(
-      onAdDismissed: () => onClosed?.call(),
+  Future<void> showJitAppOpen({
+    VoidCallback? onFailedToLoadOrShow,
+    VoidCallback? onAdShowed,
+    VoidCallback? onAdDismissed,
+  }) {
+    return EasyAds.instance.showJitAppOpen(
+      onFailedToLoadOrShow: onFailedToLoadOrShow,
+      onAdShowed: onAdShowed,
+      onAdDismissed: onAdDismissed,
     );
   }
 
   Future<void> showJitInterstitial(
     BuildContext context, {
-    Function? onClosed,
-  }) async {
-    await EasyAds.instance.showJitInterstitial(
+    VoidCallback? onFailedToLoadOrShow,
+    VoidCallback? onAdShowed,
+    VoidCallback? onAdDismissed,
+  }) {
+    return EasyAds.instance.showJitInterstitial(
       context,
-      onAdDismissed: () => onClosed?.call(),
+      onFailedToLoadOrShow: onFailedToLoadOrShow,
+      onAdShowed: onAdShowed,
+      onAdDismissed: onAdDismissed,
     );
   }
 
   Future<void> showJitRewarded(
     BuildContext context, {
     required void Function(BuildContext context) onEarnedReward,
-  }) async {
-    await EasyAds.instance.showJitRewarded(
+  }) {
+    return EasyAds.instance.showJitRewarded(
       context,
       onEarnedReward: onEarnedReward,
     );
