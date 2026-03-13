@@ -13,7 +13,7 @@ dependencies:
   easy_ads_flutter:
     git:
       url: https://github.com/nooralibutt/easy-ads.git
-      ref: feature/admob-fb-master
+      ref: admob-fb-master
   flutter:
     sdk: flutter
   flutter_local_notifications: ^21.0.0
