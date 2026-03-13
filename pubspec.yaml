@@ -24,7 +24,6 @@ dependencies:
   share_plus: ^12.0.1
   shared_preferences: ^2.5.4
   timezone: ^0.11.0
-  unity_ads_plugin: ^0.3.29
   url_launcher: ^6.3.2
 
 dev_dependencies:
