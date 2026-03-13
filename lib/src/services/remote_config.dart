@@ -1,33 +1,7 @@
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
-
-enum AdPriority { admob, appLovin, unity, facebook, any }
-
-extension AdPriorityExtension on AdPriority {
-  String get value => name;
-}
-
-const adPriorityStringToEnumMap = {
-  'admob': AdPriority.admob,
-  'appLovin': AdPriority.appLovin,
-  'unity': AdPriority.unity,
-  'facebook': AdPriority.facebook,
-  'any': AdPriority.any,
-};
-
-const _defaultAdPriority = [
-  AdPriority.admob,
-  AdPriority.facebook,
-  AdPriority.unity,
-  AdPriority.appLovin,
-  AdPriority.any
-];
-
-typedef RemoteConfigKeyMapper = String Function(
-    bool isAndroidApproving, bool isIosApproving);
+typedef RemoteConfigKeyMapper =
+    String Function(bool isAndroidApproving, bool isIosApproving);
 
 class RemoteConfig {
-  final List<AdPriority> adPriorityList;
-  final List<AdPriority> bannerAdPriorityList;
   final bool isAndroidApproving;
   final bool isIosApproving;
   final int interstitialCounter;
@@ -37,8 +11,6 @@ class RemoteConfig {
   final Map<String, dynamic>? quizLevelCategoriesData;
 
   const RemoteConfig({
-    this.adPriorityList = _defaultAdPriority,
-    this.bannerAdPriorityList = _defaultAdPriority,
     this.interstitialCounter = 2,
     this.isIosApproving = true,
     this.isAndroidApproving = true,
@@ -49,7 +21,9 @@ class RemoteConfig {
   });
 
   factory RemoteConfig.fromMap(
-      Map<String, dynamic> map, RemoteConfigKeyMapper? wallpapersKey) {
+    Map<String, dynamic> map,
+    RemoteConfigKeyMapper? wallpapersKey,
+  ) {
     // For legacy support
     final adSettings = map["ad_settings"] ?? map;
 
@@ -59,8 +33,6 @@ class RemoteConfig {
         wallpapersKey?.call(isAndroidApproving, isIosApproving) ?? 'wallpapers';
 
     return RemoteConfig(
-      adPriorityList: _toList(adSettings["ad_priority"]),
-      bannerAdPriorityList: _toList(adSettings["banner_ad_priority"]),
       interstitialCounter: adSettings["interstitial_ad_count"] ?? 4,
       isAndroidApproving: isAndroidApproving,
       isIosApproving: isIosApproving,
@@ -69,32 +41,5 @@ class RemoteConfig {
       presentationData: map["presentation_data"],
       quizLevelCategoriesData: map["quiz_level_categories"],
     );
-  }
-
-  static List<AdPriority> _toList(final List<dynamic>? list) {
-    if (list == null) {
-      return _defaultAdPriority;
-    } else {
-      return list
-          .map<AdPriority>(
-              (e) => adPriorityStringToEnumMap[e.toString()] ?? AdPriority.any)
-          .toList();
-    }
-  }
-
-  List<AdNetwork> getBannerPriorityList() {
-    final List<AdNetwork> list = [];
-    for (int i = 0; i < bannerAdPriorityList.length; i++) {
-      if (bannerAdPriorityList[i] == AdPriority.admob) {
-        list.add(AdNetwork.admob);
-      } else if (bannerAdPriorityList[i] == AdPriority.facebook) {
-        list.add(AdNetwork.facebook);
-      } else if (bannerAdPriorityList[i] == AdPriority.appLovin) {
-        list.add(AdNetwork.appLovin);
-      } else if (bannerAdPriorityList[i] == AdPriority.unity) {
-        list.add(AdNetwork.unity);
-      }
-    }
-    return list;
   }
 }

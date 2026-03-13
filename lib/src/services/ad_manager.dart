@@ -6,11 +6,8 @@ import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:easy_service_manager/src/services/remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 class AdManager {
-  List<AdPriority>? adPriorityList;
-  List<AdNetwork>? bannerAdPriorityList;
   StreamSubscription? _streamSubscription;
   RemoteConfig? adSetting;
 
@@ -19,7 +16,7 @@ class AdManager {
     bool isShowAppOpenOnAppStateChange = false,
     List<String>? adKeywords,
     RemoteConfig? adSetting,
-    Map<int, List<int>>? segments,
+    final bool autoLoadAds = true,
   }) async {
     this.adSetting = adSetting;
     final isIosApproving =
@@ -42,16 +39,8 @@ class AdManager {
       bool authorized = await ConsentManager.gatherGdprConsent(
         debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null,
       );
-      await UnityAds.setPrivacyConsent(PrivacyConsentType.gdpr, authorized);
 
       // bool privacyAuthorized = await ConsentManager.gatherPrivacyConsent();
-      await UnityAds.setPrivacyConsent(PrivacyConsentType.ccpa, true);
-      await UnityAds.setPrivacyConsent(PrivacyConsentType.pipl, true);
-
-      await UnityAds.setPrivacyConsent(
-        PrivacyConsentType.ageGate,
-        isIosApproving || isAndroidApproving,
-      );
     }
 
     final targetingInfo = AdRequest(
@@ -70,92 +59,19 @@ class AdManager {
       adMobAdRequest: targetingInfo,
       isShowAppOpenOnAppStateChange: isShowAppOpenOnAppStateChange,
       showAdBadge: isAndroidApproving,
-      fbiOSAdvertiserTrackingEnabled: isIosApproving,
-      isAgeRestrictedUserForApplovin: isIosApproving || isAndroidApproving,
-      segments: segments,
+      autoLoadAds: autoLoadAds,
     );
-
-    adPriorityList = adSetting?.adPriorityList ?? [];
-    bannerAdPriorityList = adSetting?.getBannerPriorityList();
   }
 
   static void showAppOpenAd() => EasyAds.instance.showAd(AdUnitType.appOpen);
-
-  Widget showPriorityBanner({AdSize adSize = AdSize.banner}) {
-    final list = bannerAdPriorityList;
-    if (list == null || list.isEmpty) {
-      return EasySmartBannerAd(adSize: adSize);
-    }
-
-    return EasySmartBannerAd(priorityAdNetworks: list, adSize: adSize);
-  }
-
-  bool _showPriorityInterstitial({
-    int loaderDuration = 0,
-    BuildContext? context,
-  }) {
-    final list = adPriorityList;
-    if (list == null || list.isEmpty) {
-      return EasyAds.instance.showAd(
-        AdUnitType.interstitial,
-        loaderDuration: loaderDuration,
-        context: context,
-      );
-    }
-
-    for (int i = 0; i < list.length; i++) {
-      if (list[i] == AdPriority.facebook) {
-        if (EasyAds.instance.showAd(
-          AdUnitType.interstitial,
-          adNetwork: AdNetwork.facebook,
-          loaderDuration: loaderDuration,
-          context: context,
-        )) {
-          return true;
-        }
-      } else if (list[i] == AdPriority.unity) {
-        if (EasyAds.instance.showAd(
-          AdUnitType.interstitial,
-          adNetwork: AdNetwork.unity,
-          loaderDuration: loaderDuration,
-          context: context,
-        )) {
-          return true;
-        }
-      } else if (list[i] == AdPriority.appLovin) {
-        if (EasyAds.instance.showAd(
-          AdUnitType.interstitial,
-          adNetwork: AdNetwork.appLovin,
-          loaderDuration: loaderDuration,
-          context: context,
-        )) {
-          return true;
-        }
-      } else if (list[i] == AdPriority.admob) {
-        if (EasyAds.instance.showAd(
-          AdUnitType.interstitial,
-          adNetwork: AdNetwork.admob,
-          loaderDuration: loaderDuration,
-          context: context,
-        )) {
-          return true;
-        }
-      }
-    }
-
-    return EasyAds.instance.showAd(
-      AdUnitType.interstitial,
-      loaderDuration: loaderDuration,
-      context: context,
-    );
-  }
 
   bool showInterstitial({
     Function? onInterstitialClosed,
     int loaderDuration = 0,
     BuildContext? context,
   }) {
-    if (_showPriorityInterstitial(
+    if (EasyAds.instance.showAd(
+      AdUnitType.interstitial,
       loaderDuration: loaderDuration,
       context: context,
     )) {
@@ -206,4 +122,32 @@ class AdManager {
     });
     return false;
   }
+
+  Future<void> showJitAppOpen({Function? onClosed}) async {
+    await EasyAds.instance.showJitAppOpen(
+      onAdDismissed: () => onClosed?.call(),
+    );
+  }
+
+  Future<void> showJitInterstitial(
+    BuildContext context, {
+    Function? onClosed,
+  }) async {
+    await EasyAds.instance.showJitInterstitial(
+      context,
+      onAdDismissed: () => onClosed?.call(),
+    );
+  }
+
+  Future<void> showJitRewarded(
+    BuildContext context, {
+    required void Function(BuildContext context) onEarnedReward,
+  }) async {
+    await EasyAds.instance.showJitRewarded(
+      context,
+      onEarnedReward: onEarnedReward,
+    );
+  }
+
+  Widget showNativeAd() => EasyAds.instance.createNativeAd();
 }

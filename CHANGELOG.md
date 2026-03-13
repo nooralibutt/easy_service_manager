@@ -1,3 +1,15 @@
+## 26.3.12
+
+* Updated `easy_ads_flutter` to v26.3.12
+
+### ⚠️ Breaking Changes
+
+- Ad network support has changed in this release:
+  - **Only AdMob ads are supported** in this version.
+  - To use **both Facebook and AdMob**, use the branch `admob-fb-master`.
+  - To use **all ad networks supported by previous versions**, use the branch `all-ads-master`.
+
+
 ## 26.0.0
 * Updated dependencies
 
