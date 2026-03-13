@@ -6,7 +6,6 @@ import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:easy_service_manager/src/services/remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 class AdManager {
   List<AdPriority>? adPriorityList;
