@@ -12,7 +12,7 @@ class AdManager {
   List<AdNetwork>? bannerAdPriorityList;
   StreamSubscription? _streamSubscription;
   RemoteConfig? adSetting;
-
+  final bool autoLoadAds = true;
   Future<void> initialize({
     required IAdIdManager adIdManager,
     bool isShowAppOpenOnAppStateChange = false,
@@ -37,7 +37,7 @@ class AdManager {
     }
 
     if (Platform.isAndroid || contextualAds) {
-      bool authorized = await ConsentManager.gatherGdprConsent(
+      await ConsentManager.gatherGdprConsent(
         debugGeography: kDebugMode ? DebugGeography.debugGeographyEea : null,
       );
     }
