@@ -1,3 +1,10 @@
+## 26.0.2
+* Added errorBuilder in [WelcomeWidget]
+* Updated dependencies
+
+## 26.0.1
+* Updated dependencies
+
 ## 26.0.0
 * Updated dependencies
 
