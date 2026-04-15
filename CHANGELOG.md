@@ -1,3 +1,7 @@
+## 26.3.13
+* Updated dependencies
+* Added errorBuilder in [WelcomeWidget] Called when an error occurs while loading the network image.
+
 ## 26.3.12
 
 * Updated `easy_ads_flutter` to v26.3.12
