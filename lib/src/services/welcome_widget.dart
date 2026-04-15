@@ -14,6 +14,9 @@ class WelcomeWidget extends StatefulWidget {
   final VoidCallback? onDone;
   final bool showAppOpenAd;
 
+  /// Called when an error occurs while loading the network image.
+  final Widget Function(BuildContext, Object, StackTrace?)? errorBuilder;
+
   /// If auto done is false, after loading a start button will be displayed, otherwise it will automatically call `onDone` and move to next route
   final bool autoDone;
   final String? iconPath;
@@ -30,6 +33,7 @@ class WelcomeWidget extends StatefulWidget {
     this.nextScreenRouteName,
     this.onDone,
     super.key,
+    this.errorBuilder,
   });
 
   @override
@@ -145,22 +149,22 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
               fit: BoxFit.contain,
               loadingBuilder:
                   (BuildContext context, Widget child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator.adaptive(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded.toDouble() /
-                            (loadingProgress.expectedTotalBytes?.toDouble() ??
-                                1)
-                        : null,
-                  ),
-                );
-              },
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator.adaptive(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded.toDouble() /
+                                  (loadingProgress.expectedTotalBytes
+                                          ?.toDouble() ??
+                                      1)
+                            : null,
+                      ),
+                    );
+                  },
+              errorBuilder:
+                  widget.errorBuilder ?? (_, _, _) => SizedBox.shrink(),
             )
-          : Image.asset(
-              widget.iconPath!,
-              width: double.infinity,
-            ),
+          : Image.asset(widget.iconPath!, width: double.infinity),
     );
   }
 
