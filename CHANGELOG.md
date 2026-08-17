@@ -1,5 +1,6 @@
 ## 26.3.14
 * Updated dependencies
+
 ## 26.3.13
 * Updated dependencies
 * Added errorBuilder in [WelcomeWidget] Called when an error occurs while loading the network image.
