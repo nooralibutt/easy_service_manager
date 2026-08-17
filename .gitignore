@@ -91,3 +91,6 @@ example/linux/flutter/ephemeral/.plugin_symlinks/share_plus
 example/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux
 example/linux/flutter/ephemeral/.plugin_symlinks/package_info_plus
 example/linux/flutter/ephemeral/.plugin_symlinks/flutter_local_notifications_linux
+example/macos/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Sources/FlutterGeneratedPluginSwiftPackage/FlutterGeneratedPluginSwiftPackage.swift
+example/macos/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift
+example/macos/Flutter/ephemeral/flutter_native_integration.env
